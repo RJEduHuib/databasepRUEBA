@@ -140,7 +140,6 @@ app.use(function (err, req, res, next) {
 });
 
 // Configurar archivos estáticos
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/src/public', express.static(path.join(__dirname, 'src/public'))); // agrege
 
