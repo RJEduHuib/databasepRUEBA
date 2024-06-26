@@ -14,7 +14,6 @@ const rateLimit = require('express-rate-limit');
 const csurf = require('csurf');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
-const { BrowserWindow } = require('electron');
 
 // Importar módulos locales
 const { MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE, MYSQLPORT } = require("./keys");
@@ -56,20 +55,6 @@ const storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + uniqueSuffix + ext);
     }
 });
-
-app.on('ready', () => {
-    const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
-        webPreferences: {
-            nodeIntegration: true
-        }
-    });
-
-    // Carga tu archivo .hbs principal
-    mainWindow.loadFile(path.join(__dirname, 'views', 'login', 'index.hbs'));
-});
-
 
 const upload = multer({ storage, createParentPaths: true });
 
