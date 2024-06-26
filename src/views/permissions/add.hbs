@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="">
+{{#each listaRolPagina}}
+<form action="/permissions/add/{{idRol}}" method="post">
+    {{/each}}
+    <div id="contenedor">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <div id="titulo">
+            <p>Agregar Permisos</p>
+        </div>
+        {{#each listaRol}}
+        <input type="text" name="idPermission" id="numero" value="{{maximo}}">
+        {{/each}}
+        <div id="nombre">
+            <p>Nombre de Permiso:</p>
+            <input type="text" name="namePermission" id="namePermission">
+        </div>
+        <div id="boton">
+            <button type="submit">Guardar</button>
+        </div>
+    </div>
+</form>
+
+<script src="/js/numero.js"></script>

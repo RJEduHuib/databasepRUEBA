@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="">
+{{#each listaPagina}}
+<form action="/operatiors/add/{{idPage}}" method="post">
+{{/each}}
+    <div id="contenedor">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <div id="titulo">
+            <p>Agregar las Operadoras</p>
+        </div>
+        <div id="nombre">
+            <p>Nombre de la Operadora:</p>
+            <input type="text" name="nameTypeOperator" id="nameTypeOperator" required>
+        </div>
+        <div id="boton">
+            <button type="submit">Guardar</button>
+        </div>
+    </div>
+</form>

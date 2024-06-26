@@ -1,0 +1,36 @@
+<link rel="stylesheet" href="">
+{{#each listaPagina}}
+<form action="/operatiors/list/{{idPage}}" method="get">
+    {{/each}}
+    {{#each listaPagina}}
+    <div id="mas">
+        <a href="/operatiors/add/{{idPage}}">+</a>
+    </div>
+    {{/each}}
+    <div id="contenedor">
+        <div id="titulo">
+            <p>Lista de las Operadoras</p>
+        </div>
+        <div id="Datos">
+            <div class="row">
+                {{#each lista}}
+                <div id="tarjeta">
+                    <div id="nombre">
+                        <p>{{nameTypeOperator}}</p>
+                    </div>
+                    <div id="estado">
+                        <p>{{stateTypeOperator}}</p>
+                    </div>
+                    <div id="actualizar">
+                        <a href="/operatiors/update/{{idTypeOperator}}"><button type="button">Actualizar</button></a>
+                    </div>
+                    <div id="desavilitar">
+                        <a href="/operatiors/delete/{{idTypeOperator}}"><button
+                                type="button">Desabilitar</button></a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</form>

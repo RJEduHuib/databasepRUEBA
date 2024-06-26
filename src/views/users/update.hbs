@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="">
+{{#each lista}}
+<form action="/user/update/{{idPage}}" method="post" enctype="multipart/form-data">
+    {{/each}}
+    <div id="contenedor">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        {{#each lista}}
+        <div id="datos">
+            <div id="titulo">
+                <h1>Usuario de la Pagina {{namePage}} N° <input type="text" name="idUser" id="numero"
+                        value="{{Maximo}}"></h1>
+            </div>
+            <div id="imagen">
+                <div id="cambioImagen">
+                    <img src="/img/usuario/{{photoUser}}" id="imagenPrevisualizacion" />
+                </div>
+                <input type="file" name="photoUser" id="seleccionArchivos" accept="image/*" />
+            </div>
+            <div id="nombre">
+                <p>Nombre Completo:</p>
+                <input type="text" name="completeNameUser" id="completeNameUser" required value="{{completeNameUser}}">
+            </div>
+            <div id="cedula">
+                <p>Cedula:</p>
+                <input type="text" name="identificationCardUser" id="identificationCardUser" value="{{identificationCardUser}}" required>
+            </div>
+            <div id="correo">
+                <p>Email:</p>
+                <input type="text" name="emailUser" id="emailUser" value="{{emailUser}}" required>
+            </div>
+            <div id="Celular">
+                <p>Celular:</p>
+                <input type="text" name="cellPhoneUser" id="cellPhoneUser" value="{{cellPhoneUser}}" required>
+            </div>
+            <div id="Usuario">
+                <p>Usuario:</p>
+                <input type="text" name="username" id="usernameUser" value="{{usernameUser}}" required>
+            </div>
+            <div id="Contraseña">
+                <p>Contraseña:</p>
+                <input type="password" name="password" id="passwordUser" value="{{passwordUser}}" required>
+            </div>
+            <div id="Boton">
+                <button type="submit">Actualizar</button>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</form>
+
+<script src="/js/preview.js"></script>
+<script src="/js/numero.js"></script>

@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="css/login/register.css">
+<form action="/Register" method="post" enctype="multipart/form-data">
+    <div id="contenedor" class="formulario-container">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <div id="datos" class="formulario-datos">
+            <div class="columna-izquierda">
+                <div id="titulo" class="formulario-titulo">
+                    {{#each lista}}
+                    <h1>Registro N° <input type="text" name="idUser" id="numero" value="{{Maximo}}" readonly ></h1>
+                    {{/each}}
+                </div>
+                <div id="imagen" class="formulario-imagen">
+                    <div id="cambioImagen">
+                        <img src="/img/usuario/god.jpg" id="imagenPrevisualizacion" />
+                    </div>
+                    <input type="file" name="photoUse" id="seleccionArchivos" accept="image/*" />
+                </div>
+            </div>
+            <div class="columna-derecha">
+                <div id="nombre">
+                    <p>Nombre Completo:</p>
+                    <input type="text" name="completeNameUser" id="completeNameUser" required placeholder="Ingrese Nomre completo">
+                </div>
+                <div id="cedula">
+                    <p>Cedula:</p>
+                    <input type="text" name="identificationCardUser" id="identificationCardUser" required placeholder="Ingrese Cedula">
+                </div>
+                <div id="correo">
+                    <p>Email:</p>
+                    <input type="text" name="emailUser" id="emailUser" required placeholder="Ingrese Correo Electronico ">
+                </div>
+                <div id="Celular">
+                    <p>Celular:</p>
+                    <input type="text" name="cellPhoneUser" id="cellPhoneUser" required placeholder="Ingrese Celular">
+                </div>
+                <div id="Usuario">
+                    <p>Usuario:</p>
+                    <input type="text" name="username" id="usernameUser" required placeholder="Ingrese Usuario ">
+                </div>
+                <div id="Contraseña">
+                    <p>Contraseña:</p>
+                    <input type="password" name="password" id="password" required placeholder="Ingrese contraseña">
+                </div>
+                <div id="Boton">
+                    <button type="submit">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script src="/js/preview.js"></script>
+<script src="/js/numero.js"></script>

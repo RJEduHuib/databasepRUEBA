@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="">
+{{#each listaPermisos}}
+<form action="/permissions/list/{{idRol}}" method="get">
+    {{/each}}
+    <div id="contenedor">
+        <div id="titulo">
+            <p>Lista de Permisos</p>
+        </div>
+        {{#each listaPermisos}}
+        <div id="mas">
+            <a href="/permissions/add/{{idRol}}">+</a>
+        </div>
+        {{/each}}
+        <div id="Datos">
+            <div class="row">
+                {{#each lista}}
+                <div id="tarjeta">
+                    <div id="nombre">
+                        <p>{{namePermission}}</p>
+                    </div>
+                    <div id="estado">
+                        <p>{{statePermission}}</p>
+                    </div>
+                    <div id="actualizar">
+                        <a href="/permissions/update/{{idPermission}}"><button type="button">Actualizar</button></a>
+                    </div>
+                    <div id="desavilitar">
+                        <a href="/permissions/delete/{{idPermission}}"><button type="button">Desabilitar</button></a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="">
+{{#each listaPagina}}
+<form action="/clients/list/{{idPage}}" method="post">
+{{/each}}
+    <div id="contenedor">
+        <div id="titulo">
+            <p>Lista de Clientes</p>
+        </div>
+        {{#each listaPagina}}
+        <div id="mas">
+            <a href="/clients/add/{{idPage}}">+</a>
+        </div>
+        {{/each}}
+        <div id="Datos">
+            <div class="row">
+                {{#each lista}}
+                <div id="tarjeta">
+                    <div id="foto">
+                        <img src="/img/usuario/{{photoClient}}">
+                    </div>
+                    <div id="nombre">
+                        <p>{{completeNameClient}}</p>
+                    </div>
+                    <div id="descripcion">
+                        <p>{{identificationCardClient}}</p>
+                    </div>
+                    <div id="correo">
+                        <p>{{emailClient}}</p>
+                    </div>
+                    <div id="celular">
+                        <p>{{cellPhoneClient}}</p>
+                    </div>
+                    <div id="usuario">
+                        <p>{{usernameClient}}</p>
+                    </div>
+                    <div id="contraseña">
+                        <p>{{passwordClient}}</p>
+                    </div>
+                    <div id="estado">
+                        <p>{{stateClient}}</p>
+                    </div>
+                    <div id="actualizar">
+                        <a href="/clients/update/{{idClient}}"><button type="button">Actualizar</button></a>
+                    </div>
+                    <div id="comprador">
+                        <a href="/sell/add/{{idClient}}"><button type="button">Comprador</button></a>
+                    </div>
+                    <div id="desavilitar">
+                        <a href="/clients/desability/{{idClient}}"><button type="button">Desabilitar</button></a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,25 @@
+{{#if message}}
+<div id="contenedorMensaje">
+    <div id="mensaje">
+        <p>{{message}}</p>
+        <div id="cerrar">
+            <!-- Asegúrate de que el ID aquí coincida con el que buscas en tu JS -->
+            <button type="button" id="botonCerrar">x</button>
+        </div>
+    </div>
+</div>
+{{/if}}
+
+{{#if success}}
+<div id="contenedorMensaje">
+    <div id="mensaje">
+        <p>{{success}}</p>
+        <div id="cerrar">
+            <!-- Asegúrate de que el ID aquí coincida con el que buscas en tu JS -->
+            <button type="button" id="botonCerrar">x</button>
+        </div>
+    </div>
+</div>
+{{/if}}
+
+<script src="/js/cerrar.js"></script>

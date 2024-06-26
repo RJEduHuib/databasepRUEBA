@@ -1,0 +1,99 @@
+<link rel="stylesheet" href="">
+{{#each listaPagina}}
+<form action="/sell/add/{{pageIdPage}}" method="post">
+    {{/each}}
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <div id="contenedor">
+        <div id="titulo">
+            {{#each lista}}<p>Agregar Comprador N°
+                <input type="text" name="idSell" id="numero" value="{{Maximo}}">
+                {{/each}}
+            </p>
+        </div>
+        {{#each listaPagina}}
+        <div id="nombre">
+            <p>Nombre del Comprador:</p>
+            <input type="text" name="namePersonSell" id="namePersonSell" required value="{{completeNameClient}}">
+        </div>
+        <div id="compania">
+            <p>Nombre de la Compania:</p>
+            <input type="text" name="companySell" id="companySell" required value="{{companySell}}">
+        </div>
+        <div id="celular">
+            <p>Celular:</p>
+            <input type="text" name="cellPhoneSell" id="cellPhoneSell" required value="{{cellPhoneSell}}">
+        </div>
+        <div id="tipoPago">
+            <p>Tipo de Pago:</p>
+            <input type="text" name="payTypeSell" id="payTypeSell" required value="{{payTypeSell}}">
+        </div>
+        <div id="pago">
+            <p>Precio:</p>
+            <input type="text" name="salesValueSell" id="salesValueSell" required value="{{salesValueSell}}">
+        </div>
+        <div id="estado">
+            <p>Estado:</p>
+            <div id="activo">
+                <input type="text" name="stateSell" id="idestado" readonly value="{{stateSell}}">
+                <button type="button" id="activarBtn">Activar</button>
+            </div>
+            <div id="desactivo">
+                <button type="button" id="desactivarBtn">Desactivar</button>
+            </div>
+        </div>
+        <div id="boton">
+            <button type="submit">Guardar</button>
+        </div>
+    </div>
+</form>
+{{else}}
+{{#each listas}}
+<form action="/sell/update/{{idSell}}" method="post">
+    {{/each}}
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <div id="contenedor">
+        {{#each listas}}
+        <div id="titulo">
+            <p>Agregar Comprador N°
+                <input type="text" name="idSell" id="" value="{{idSell}}">
+            </p>
+        </div>
+        <div id="nombre">
+            <p>Nombre del Comprador:</p>
+            <input type="text" name="namePersonSell" id="namePersonSell" required value="{{completeNameClient}}">
+        </div>
+        <div id="compania">
+            <p>Nombre de la Compania:</p>
+            <input type="text" name="companySell" id="companySell" required value="{{companySell}}">
+        </div>
+        <div id="celular">
+            <p>Celular:</p>
+            <input type="text" name="cellPhoneSell" id="cellPhoneSell" required value="{{cellPhoneSell}}">
+        </div>
+        <div id="tipoPago">
+            <p>Tipo de Pago:</p>
+            <input type="text" name="payTypeSell" id="payTypeSell" required value="{{payTypeSell}}">
+        </div>
+        <div id="pago">
+            <p>Precio:</p>
+            <input type="text" name="salesValueSell" id="salesValueSell" required value="{{salesValueSell}}">
+        </div>
+        <div id="estado">
+            <p>Estado:</p>
+            <div id="activo">
+                <input type="text" name="stateSell" id="idestado" readonly value="{{stateSell}}">
+                <button type="button" id="activarBtn">Activar</button>
+            </div>
+            <div id="desactivo">
+                <button type="button" id="desactivarBtn">Desactivar</button>
+            </div>
+        </div>
+        <div id="boton">
+            <button type="submit">Guardar</button>
+        </div>
+    </div>
+</form>
+{{/each}}
+{{/each}}
+<script src="/js/numero.js"></script>
+<script src="/js/estados.js"></script>

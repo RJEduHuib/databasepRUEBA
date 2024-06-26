@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="">
+{{#each lista}}
+<form action="/permissions/update/{{idPermission}}" method="post">
+{{/each}}
+<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+{{#each lista}}
+    <div id="contenedor">
+        <div id="titulo">
+            <p>Actualizar Permiso</p>
+        </div>
+        <input type="text" name="idRol" id="idRol" value="{{rolIdRol}}">
+        <div id="nombre">
+            <p>Nombre de Permiso:</p>
+            <input type="text" name="namePermission" id="namePermission" value="{{namePermission}}">
+        </div>
+        <div id="estado">
+            <p>Estado:</p>
+            <div id="activo">
+                <input type="text" name="statePermission" id="idestado" readonly value="{{statePermission}}">
+                <button type="button" id="activarBtn">Activar</button>
+            </div>
+            <div id="desactivo">
+                <button type="button" id="desactivarBtn">Desactivar</button>
+            </div>
+        </div>
+        <div id="boton">
+            <button type="submit">Actualizar</button>
+        </div>
+    </div>
+</form>
+{{/each}}
+
+<script src="/js/estados.js"></script>

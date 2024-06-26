@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="">
+{{#each lista}}
+<form action="/page/Update/{{idPage}}" method="post" enctype="multipart/form-data">
+{{/each}}
+<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+{{#each lista}} 
+   <div id="contenedor">        
+        <div id="titulo">
+            <p>Actualizar Pagina N°  <input type="text" name="idPage" id="idPage" value="{{idPage}}"></p>
+        </div>
+        <div id="logo">
+            <div id="imagen">
+                <div id="cambioImagen">
+                    <img src="/img/page/{{photoPage}}" id="imagenPrevisualizacion" />
+                </div>
+                <input type="file" name="photoPage" id="seleccionArchivos" accept="image/*" />
+            </div>
+            <div id="Nombre">
+                <p>Nombre de la Pagina:</p>
+                <input type="text" name="namePage" id="namePage" required value="{{namePage}}">
+            </div>
+            <div id="descripcion">
+                <p>Descripción:
+                <textarea name="descriptionPage" id="descriptionPage">{{descriptionPage}}</textarea>
+                </p>
+            </div>
+            <div id="mision">
+                <p>Misión:</p>
+                <textarea name="misonPage" id="misonPage">{{misonPage}}</textarea>
+            </div>
+            <div id="vision">
+                <p>Visión:</p>
+                <textarea name="visonPage" id="visonPage">{{visonPage}}</textarea>
+            </div>
+            <div id="celular">
+                <p>Celular:</p>
+                <input type="text" name="cellPhonePage" id="cellPhonePage" value="{{cellPhonePage}}">
+            </div>
+            <div id="correo">
+                <p>Correo Electronico:</p>
+                <input type="email" name="emailPage" id="emailPage" value="{{emailPage}}">
+            </div>
+            <div id="boton">
+                <button type="submit">Actualizar</button>
+            </div>
+        </div>
+        
+    </div>
+</form>
+{{/each}}
+<script src="/js/preview.js"></script>

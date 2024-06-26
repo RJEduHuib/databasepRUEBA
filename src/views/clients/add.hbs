@@ -1,0 +1,48 @@
+<link rel="stylesheet" href="">
+{{#each listaPagina}}
+<form action="/clients/add/{{idPage}}" method="post" enctype="multipart/form-data">
+{{/each}}
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <div id="contenedor">
+        <div id="titulo">
+            <h1>Cliente de la Pagina N° {{#each lista}}<input type="text" name="idClient" id="numero" value="{{Maximo}}">{{/each}}
+            </h1>
+        </div>
+        <div id="imagen">
+            <div id="cambioImagen">
+                <img src="/img/icons/noImge.png" id="imagenPrevisualizacion" />
+            </div>
+            <input type="file" name="photoClient" id="seleccionArchivos" accept="image/*" />
+        </div>
+        <div id="nombre">
+            <p>Nombre Completo:</p>
+            <input type="text" name="completeNameClient" id="completeNameClient" required>
+        </div>
+        <div id="cedula">
+            <p>Cedula:</p>
+            <input type="text" name="identificationCardClient" id="identificationCardClient" required>
+        </div>
+        <div id="correo">
+            <p>Email:</p>
+            <input type="text" name="emailClient" id="emailClient" required>
+        </div>
+        <div id="Celular">
+            <p>Celular:</p>
+            <input type="text" name="cellPhoneClient" id="cellPhoneClient" required>
+        </div>
+        <div id="Usuario">
+            <p>Usuario:</p>
+            <input type="text" name="usernameClient" id="usernameClient" required>
+        </div>
+        <div id="Contraseña">
+            <p>Contraseña:</p>
+            <input type="password" name="passwordClient" id="passwordClient" required>
+        </div>
+        <div id="Boton">
+            <button type="submit">Guardar</button>
+        </div>
+    </div>
+</form>
+
+<script src="/js/numero.js"></script>
+<script src="/js/preview.js"></script>

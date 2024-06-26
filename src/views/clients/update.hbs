@@ -1,0 +1,57 @@
+<link rel="stylesheet" href="">
+{{#each lista}}
+<form action="/clients/update/{{idClient}}" method="post">
+    {{/each}}
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    {{#each lista}}
+    <div id="contenedor">
+        <div id="datos">
+            <div id="titulo">
+                <h1>Cliente de la Pagina {{namePage}}</h1>
+            </div>
+            <div id="imagen">
+                <div id="cambioImagen">
+                    <img src="/img/usuario/{{photoClient}}" id="imagenPrevisualizacion" />
+                </div>
+                <input type="file" name="photoClient" id="seleccionArchivos" accept="image/*" />
+            </div>
+            <div id="nombre">
+                <p>Nombre Completo:</p>
+                <input type="text" name="completeNameClient" id="identificationCardClient" required value="{{completeNameClient}}">
+            </div>
+            <div id="cedula">
+                <p>Cedula:</p>
+                <input type="text" name="identificationCardClient" id="identificationCardClient" required value="{{identificationCardClient}}">
+            </div>
+            <div id="correo">
+                <p>Email:</p>
+                <input type="text" name="emailClient" id="emailClient" required value="{{emailClient}}">
+            </div>
+            <div id="Celular">
+                <p>Celular:</p>
+                <input type="text" name="cellPhoneClient" id="cellPhoneClient" required value="{{cellPhoneClient}}">
+            </div>
+            <div id="Usuario">
+                <p>Usuario:</p>
+                <input type="text" name="usernameClient" id="usernameClient" required value="{{usernameClient}}">
+            </div>2
+            <div id="estado">
+            <p>Estado:</p>
+            <div id="activo">
+                <input type="text" name="stateClient" id="idestado" readonly>
+                <button type="button">Contratar</button>
+            </div>
+            <div id="desactivo">
+                <button type="button">Despedir</button>
+            </div>
+        </div>
+            <div id="Boton">
+                <button type="submit">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</form>
+{{/each}}
+<script src="/js/preview.js"></script>
+<script src="/js/estados.js"></script>
+<script src="/js/numero.js"></script>

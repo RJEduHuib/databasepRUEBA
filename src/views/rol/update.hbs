@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="">
+{{#each lista}}
+<form action="/rol/update/{{idRol}}" method="post">
+{{/each}}
+<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+{{#each lista}}
+    <div id="contenedor">
+        <div id="titulo">
+            <p>Actualizar Rol</p>
+        </div>
+        <input type="text" name="idpage" id="idpage" value="{{pageIdPage}}">
+        <div id="nombre">
+            <p>Nombre de Rol:</p>
+            <input type="text" name="nameRol" id="nameRol" value="{{nameRol}}">
+        </div>
+        <div id="estado">
+            <p>Estado:</p>
+            <div id="activo">
+                <input type="text" name="stateRol" id="idestado" readonly value="{{stateRol}}">
+                <button type="button" id="activarBtn">Activar</button>
+            </div>
+            <div id="desactivo">
+                <button type="button" id="desactivarBtn">Desactivar</button>
+            </div>
+        </div>
+        <div id="boton">
+            <button type="submit">Actualizar</button>
+        </div>
+    </div>
+</form>
+{{/each}}
+
+<script src="/js/estados.js"></script>

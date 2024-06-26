@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="css/login/index.css">
+    <div id="vertical-line"></div>
+<form action="/" method="post">
+    <div id="contenedor">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <div id="logo">
+            <img src="img/icons/noImge.png">
+        </div>
+        <div id="datos">
+            <div id="titulo">Login</div>
+            <div id="usuario">
+                <p>Cuenta:</p>
+                <input type="text" name="username" id="username" required placeholder="Ingresa la Cuenta">
+            </div>
+            <div id="contraseña">
+                <p>Contraseña:</p>
+                <input type="text" name="password" id="password" required placeholder="Ingresa la Contraseña ">
+            </div>
+            <div id="boton">
+                <button type="submit">Ingresar</button>
+            </div>
+        </div>
+    </div>
+</form>

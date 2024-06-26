@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="">
+{{#each lista}}
+<form action="/operatiors/update/{{idTypeOperator}}" method="post">
+    {{/each}}
+    <div id="contenedor">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <div id="titulo">
+            <p>Actualizar la Operadora</p>
+        </div>
+        {{#each lista}}
+        <div id="nombre">
+            <p>Nombre de la Operadora:</p>
+            <input type="text" name="nameTypeOperator" id="nameTypeOperator" required value="{{nameTypeOperator}}">
+        </div>
+        <div id="estado">
+            <p>Estado:</p>
+            <div id="activo">
+                <input type="text" name="stateTypeOperator" id="idestado" readonly value="{{stateTypeOperator}}">
+                <button type="button" id="activarBtn">Activar</button>
+            </div>
+            <div id="desactivo">
+                <button type="button" id="desactivarBtn">Desactivar</button>
+            </div>
+        </div>
+        <div id="boton">
+            <button type="submit">Actualizar</button>
+        </div>
+    </div>
+</form>
+{{/each}}
+
+<script src="/js/estados.js"></script>

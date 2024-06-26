@@ -1,0 +1,23 @@
+{{#if user}}
+<div id="nav">
+    <nav>
+        <div id="Administracion">
+            {{#each listaPagina}}
+            <a href="/user/list/{{idPage}}"><button type="button">Administracion de Usuarios</button></a>
+        </div>
+        <div id="base">
+            <a href="/listBase/list/{{idPage}}"><button type="button">Base de Excel</button></a>
+        </div>
+        <div id="rol">
+            <a href="/rol/list/{{idPage}}"><button type="button">Rol</button></a>
+        </div>
+        <div id="clientes">
+            <a href="/clients/list/{{idPage}}"><button type="button">Clientes</button></a>
+        </div>
+        <div id="base">
+            <a href="/operatiors/list/{{idPage}}"><button type="button">Tipo de Operadoras</button></a>
+            {{/each}}
+        </div>
+    </nav>
+</div>
+{{/if}}
