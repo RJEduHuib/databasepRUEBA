@@ -111,9 +111,9 @@ base.lista = async (req, res) => {
     try {
         const id = req.params.id
         const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
-        const [operadoraMovistar] = await sql.promise().query('SELECT * FROM typeoperators WHERE pageIdPage = ? and idTypeOperator = "1"', [id])
-        const [operadoraCnt] = await sql.promise().query('SELECT * FROM typeoperators WHERE pageIdPage = ? and idTypeOperator = "2"', [id])
-        const [operadoraClaro] = await sql.promise().query('SELECT * FROM typeoperators WHERE pageIdPage = ? and idTypeOperator = "3"', [id])
+        const [operadoraMovistar] = await sql.promise().query('SELECT * FROM typeOperators WHERE pageIdPage = ? and idTypeOperator = "1"', [id])
+        const [operadoraCnt] = await sql.promise().query('SELECT * FROM typeOperators WHERE pageIdPage = ? and idTypeOperator = "2"', [id])
+        const [operadoraClaro] = await sql.promise().query('SELECT * FROM typeOperators WHERE pageIdPage = ? and idTypeOperator = "3"', [id])
         const [row] = await sql.promise().query('SELECT * FROM initialbases where pageIdPage = ?', [id])
         res.render('excel/list', { lista: row, listaPagina: pagina, listaOperadoraMovistar: operadoraMovistar, listaOperadoraClaro: operadoraClaro, listaOperadoraCnt: operadoraCnt, csrfToken: req.csrfToken() });
     } catch (error) {
