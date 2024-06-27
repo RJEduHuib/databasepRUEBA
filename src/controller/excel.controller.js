@@ -78,7 +78,7 @@ base.mandar = async (req, res) => {
             }
         });
 
-        const excelSubir = path.join(__dirname, '../public/excel/' + imagenUsuario.name);
+        const excelSubir = path.join(__dirname + '/../public/excel/' + imagenUsuario.name);
 
         const csvData = fs.readFileSync(excelSubir, { encoding: 'utf-8' });
 
