@@ -13,7 +13,6 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const csurf = require('csurf');
 const cookieParser = require('cookie-parser');
-const multer = require('multer');
 
 // Importar módulos locales
 const { MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE, MYSQLPORT } = require("./keys");
@@ -46,17 +45,6 @@ app.set('port', process.env.PORT || 4000);
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', handlebars.engine);
 app.set('view engine', '.hbs');
-
-const storage = multer.diskStorage({
-    destination: '/public/img/excel/',
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = path.extname(file.originalname);
-        cb(null, file.fieldname + '-' + uniqueSuffix + ext);
-    }
-});
-
-const upload = multer({ storage, createParentPaths: true });
 
 // Configurar middleware
 app.use(cookieParser());
@@ -140,7 +128,7 @@ app.use(function (err, req, res, next) {
 });
 
 // Configurar archivos estáticos
-
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/src/public', express.static(path.join(__dirname, 'src/public'))); // agrege
 
 // Rutas - Definir tus rutas aquí
