@@ -42,7 +42,7 @@ client.mandar = async (req, res) => {
         };
 
         const newDetailClient = {
-            createDetailClients: new Date().toLocaleString(),
+            createdetailClients: new Date().toLocaleString(),
             clientIdClient: idClient,
             pageIdPage: ids
         }

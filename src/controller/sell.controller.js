@@ -37,13 +37,13 @@ sell.mandar = async (req, res) => {
             pageIdPage: ids,
             createSell: new Date().toLocaleString(),
         }
-        const newdetailclients = {
+        const newdetailClients = {
             sellIdSell: idSell
         }
         await orm.sell.create(newSpeciality)
-        orm.detailClients.findOne({ where: { idDetailClients: idSell } })
+        orm.detailClients.findOne({ where: { iddetailClients: idSell } })
             .then((result) => {
-                result.update(newdetailclients)
+                result.update(newdetailClients)
             })
         req.flash('success', 'Se creo el comprador')
         res.redirect('/sell/list/' + ids);
