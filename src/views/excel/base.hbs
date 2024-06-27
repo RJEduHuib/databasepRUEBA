@@ -1,9 +1,0 @@
-<form action="/listBase/list/{{user.idUser}}" method="post">
-    {{#each lista}}
-    <input type="text" name="numbers" id="numeros" value="{{namePersonDataBase}}">
-    {{/each}}
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-    <div id="consulta">
-        <button type="submit">Consulta</button>
-    </div>
-</form>

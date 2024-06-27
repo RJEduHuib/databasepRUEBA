@@ -1,0 +1,11 @@
+{{#each listaInicial}}
+<form action="/listBase/baseCosultaCnt/{{idInitialBase}}" method="post">
+{{/each}}
+    {{#each lista}}
+    <input type="text" name="numbers" id="numeros" value="{{numerosBaseInicial}}">
+    {{/each}}
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <div id="consulta">
+        <button type="submit">Consulta</button>
+    </div>
+</form>

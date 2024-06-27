@@ -92,7 +92,9 @@ page.mandar = async (req, res) => {
                 }); */
             }
         });
-
+        await sql.promise().execute('INSERT INTO typeoperators(idTypeOperator, nameTypeOperator, stateTypeOperator, createTypeOperator, pageIdPage) VALUES ("1","Movistar", "Activo", ?, ?)', [new Date().toLocaleString(), idPage])
+        await sql.promise().execute('INSERT INTO typeoperators(idTypeOperator, nameTypeOperator, stateTypeOperator, createTypeOperator, pageIdPage) VALUES ("2","Cnt", "Activo", ?, ?)', [new Date().toLocaleString(), idPage])
+        await sql.promise().execute('INSERT INTO typeoperators(idTypeOperator, nameTypeOperator, stateTypeOperator, createTypeOperator, pageIdPage) VALUES ("3","Claro", "Activo", ?, ?)', [new Date().toLocaleString(), idPage])
         req.flash('success', 'Exito al guardar');
         res.redirect('/page/list/' + id);
     } catch (error) {

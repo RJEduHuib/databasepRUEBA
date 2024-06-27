@@ -53,6 +53,8 @@ const userModel = require('../models/user.model');
 const unionUserRolPermissionsModel = require('../models/unionUserRolPermission')
 const detalleUnionUserRolPermissionsModel = require('../models/detailUnionUserRolPermission')
 const detailClientsModel = require('../models/detailClients.model')
+const baseInitialModel = require('../models/baseInicial')
+const detailBaseInitialModel = require('../models/detailBaseInitial')
 //zincronia tablas
 const base = baseModel(sequelize, Sequelize)
 const client = clientModel(sequelize, Sequelize)
@@ -68,6 +70,8 @@ const user = userModel(sequelize, Sequelize)
 const unionUserRolPermissions = unionUserRolPermissionsModel(sequelize, Sequelize)
 const detalleUnionUserRolPermissions = detalleUnionUserRolPermissionsModel(sequelize, Sequelize)
 const detailClients = detailClientsModel(sequelize, Sequelize)
+const baseInitial = baseInitialModel(sequelize, Sequelize)
+const detailBaseInitial = detailBaseInitialModel(sequelize, Sequelize)
 //relaciones
 
 user.hasMany(unionUserRolPermissions)
@@ -124,6 +128,12 @@ detailClients.belongsTo(page)
 page.hasMany(typeOperator)
 typeOperator.belongsTo(page)
 
+page.hasMany(baseInitial)
+baseInitial.belongsTo(page)
+
+baseInitial.hasMany(detailBaseInitial)
+detailBaseInitial.belongsTo(baseInitial)
+
 sequelize.sync()
 
 // Exportar el objeto sequelize
@@ -141,5 +151,7 @@ module.exports = {
     user,
     unionUserRolPermissions,
     detalleUnionUserRolPermissions,
-    detailClients
+    detailClients,
+    baseInitial,
+    detailBaseInitial
 };
