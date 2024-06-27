@@ -83,7 +83,10 @@ consulta.iniciarSesionYConsultarMovistar = async (req, res) => {
 
 consulta.iniciarSesionYConsultarClaro = async (req, res) => {
   try {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({
+      executablePath: chromium.path,
+      headless: false, // Mostrar el navegador con interfaz gráfica
+    });
     const page = await browser.newPage();
 
     // Iniciar sesión
@@ -162,7 +165,10 @@ consulta.iniciarSesionYConsultarClaro = async (req, res) => {
 
 consulta.iniciarSesionYConsultarCnt = async (req, res) => {
   try {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({
+      executablePath: chromium.path,
+      headless: false, // Mostrar el navegador con interfaz gráfica
+    });
     const page = await browser.newPage();
 
     // Iniciar sesión
