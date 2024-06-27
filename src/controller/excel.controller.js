@@ -17,7 +17,7 @@ const base = {}
 base.mostrar = async (req, res) => {
     try {
         const id = req.params.id
-        const [rows] = await sql.promise().query('SELECT MAX(idInitialBase) AS Maximo FROM initialbases');
+        const [rows] = await sql.promise().query('SELECT MAX(idInitialBase) AS Maximo FROM InitialBases');
         const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
         res.render('excel/add', { lista: rows, listaPagina: pagina, csrfToken: req.csrfToken() });
     } catch (error) {
@@ -49,7 +49,7 @@ base.mandar = async (req, res) => {
                 console.error(err);
                 return req.flash("message", "Error al guardar el excel.");
             } else {
-                sql.promise().query("INSERT INTO initialbases(baseDoc, pageIdPage) VALUES (?, ?)", [imagenUsuario.name, id])
+                sql.promise().query("INSERT INTO InitialBases(baseDoc, pageIdPage) VALUES (?, ?)", [imagenUsuario.name, id])
                 /* const formData = {
                     image: {
                         value: fs.createReadStream(filePath),
@@ -89,7 +89,7 @@ base.mandar = async (req, res) => {
             const numeroBase = row.trim(); // Elimina espacios en blanco alrededor del número
             if (numeroBase) { // Verifica que no sea una fila vacía
                 const numerosSinComas = numeroBase.replace(/;/g, ''); // Elimina las comas
-                await connection.execute('INSERT INTO detailinitialbases (numerosBaseInicial, createDetailInitialBase, InitialBaseIdInitialBase) VALUES (?, ?, ?)', [numerosSinComas, new Date().toLocaleString(), idBase]);
+                await connection.execute('INSERT INTO detailInitialBases (numerosBaseInicial, createDetailInitialBase, InitialBaseIdInitialBase) VALUES (?, ?, ?)', [numerosSinComas, new Date().toLocaleString(), idBase]);
             }
         }
         await connection.end();
@@ -114,7 +114,7 @@ base.lista = async (req, res) => {
         const [operadoraMovistar] = await sql.promise().query('SELECT * FROM typeOperators WHERE pageIdPage = ? and idTypeOperator = "1"', [id])
         const [operadoraCnt] = await sql.promise().query('SELECT * FROM typeOperators WHERE pageIdPage = ? and idTypeOperator = "2"', [id])
         const [operadoraClaro] = await sql.promise().query('SELECT * FROM typeOperators WHERE pageIdPage = ? and idTypeOperator = "3"', [id])
-        const [row] = await sql.promise().query('SELECT * FROM initialbases where pageIdPage = ?', [id])
+        const [row] = await sql.promise().query('SELECT * FROM InitialBases where pageIdPage = ?', [id])
         res.render('excel/list', { lista: row, listaPagina: pagina, listaOperadoraMovistar: operadoraMovistar, listaOperadoraClaro: operadoraClaro, listaOperadoraCnt: operadoraCnt, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
@@ -126,8 +126,8 @@ base.listaDetalleMovistar = async (req, res) => {
     try {
         const id = req.params.id
         const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
-        const [row2] = await sql.promise().query('SELECT * FROM initialbases where pageIdPage = ?', [id])
-        const [row] = await sql.promise().query('SELECT * FROM detailinitialbases where InitialBaseIdInitialBase = ?', [id])
+        const [row2] = await sql.promise().query('SELECT * FROM InitialBases where pageIdPage = ?', [id])
+        const [row] = await sql.promise().query('SELECT * FROM detailInitialBases where InitialBaseIdInitialBase = ?', [id])
         res.render('excel/baseMovistar', { lista: row, listaPagina: pagina, listaInicial: row2, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
@@ -139,8 +139,8 @@ base.listaDetalleClaro = async (req, res) => {
     try {
         const id = req.params.id
         const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
-        const [row2] = await sql.promise().query('SELECT * FROM initialbases where pageIdPage = ?', [id])
-        const [row] = await sql.promise().query('SELECT * FROM detailinitialbases where InitialBaseIdInitialBase = ?', [id])
+        const [row2] = await sql.promise().query('SELECT * FROM InitialBases where pageIdPage = ?', [id])
+        const [row] = await sql.promise().query('SELECT * FROM detailInitialBases where InitialBaseIdInitialBase = ?', [id])
         res.render('excel/baseClaro', { lista: row, listaPagina: pagina, listaInicial: row2, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
@@ -152,8 +152,8 @@ base.listaDetalleCnt = async (req, res) => {
     try {
         const id = req.params.id
         const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
-        const [row2] = await sql.promise().query('SELECT * FROM initialbases where pageIdPage = ?', [id])
-        const [row] = await sql.promise().query('SELECT * FROM detailinitialbases where InitialBaseIdInitialBase = ?', [id])
+        const [row2] = await sql.promise().query('SELECT * FROM InitialBases where pageIdPage = ?', [id])
+        const [row] = await sql.promise().query('SELECT * FROM detailInitialBases where InitialBaseIdInitialBase = ?', [id])
         res.render('excel/baseCnt', { lista: row, listaPagina: pagina, listaInicial: row2, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
