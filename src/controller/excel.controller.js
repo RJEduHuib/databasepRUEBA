@@ -29,7 +29,7 @@ base.mostrar = async (req, res) => {
 base.mandar = async (req, res) => {
     const id = req.params.id
     try {
-        const { idBase } = req.body
+        const { idBase } = req.body;
         const imagenUsuario = req.files.excelSubir;
         const validacion = path.extname(imagenUsuario.name);
         const extencion = [".csv"];
@@ -42,63 +42,35 @@ base.mandar = async (req, res) => {
             return req.flash("message", "Excel no insertada.");
         }
 
-        const filePath = __dirname + '/../public/excel/' + imagenUsuario.name;
+        const filePath = path.join(__dirname, '../public/excel/' + imagenUsuario.name);
 
-        imagenUsuario.mv(filePath, (err) => {
+        imagenUsuario.mv(filePath, async (err) => {
             if (err) {
                 console.error(err);
                 return req.flash("message", "Error al guardar el excel.");
             } else {
-                sql.promise().query("INSERT INTO InitialBases(baseDoc, pageIdPage) VALUES (?, ?)", [imagenUsuario.name, id])
-                /* const formData = {
-                    image: {
-                        value: fs.createReadStream(filePath),
-                        options: {
-                            filename: imagenUsuario.name,
-                            contentType: imagenUsuario.mimetype,
-                        },
-                    },
-                };
- 
-                const postRequesten = request.post({
-                    url: 'http://localhost:5000/imagenEvento',
-                    formData: formData,
-                });
- 
-                req.setTimeout(0);
- 
-                postRequesten.on('error', function (err) {
-                    console.error('upload failed:', err);
-                    req.flash("success", "Error al subir imagen.");
-                });
- 
-                postRequesten.on('response', function (response) {
-                    console.log('Upload successful! Server responded with:', response.statusCode);
-                }); */
+                sql.promise().query("INSERT INTO InitialBases(idInitialBase, baseDoc, pageIdPage) VALUES (?, ?, ?)", [idBase, imagenUsuario.name, id])
+                const csvData = fs.readFileSync(filePath, { encoding: 'utf-8' });
+
+                // Parsea los datos del CSV
+                const rows = csvData.split('\n'); // Divide el contenido en filas
+                const connection = await mysql.createConnection(dbConfig);
+                for (const row of rows) {
+                    const numeroBase = row.trim(); // Elimina espacios en blanco alrededor del número
+                    if (numeroBase) { // Verifica que no sea una fila vacía
+                        const numerosSinComas = numeroBase.replace(/;/g, ''); // Elimina las comas
+                        await connection.execute('INSERT INTO detailInitialBases (numerosBaseInicial, createDetailInitialBase, InitialBaseIdInitialBase) VALUES (?, ?, ?)', [numerosSinComas, new Date().toLocaleString(), idBase]);
+                    }
+                }
+                await connection.end();
+
+                console.log('Datos importados correctamente');
+                req.flash('success', 'Datos importados correctamente');
+
+                req.flash('success', 'Éxito al guardar');
+                res.redirect('/listBase/list/' + id);
             }
         });
-
-        const excelSubir = path.join(__dirname + '/../public/excel/' + imagenUsuario.name);
-
-        const csvData = fs.readFileSync(excelSubir, { encoding: 'utf-8' });
-
-        // Parsea los datos del CSV
-        const rows = csvData.split('\n'); // Divide el contenido en filas
-        const connection = await mysql.createConnection(dbConfig);
-        for (const row of rows) {
-            const numeroBase = row.trim(); // Elimina espacios en blanco alrededor del número
-            if (numeroBase) { // Verifica que no sea una fila vacía
-                const numerosSinComas = numeroBase.replace(/;/g, ''); // Elimina las comas
-                await connection.execute('INSERT INTO detailInitialBases (numerosBaseInicial, createDetailInitialBase, InitialBaseIdInitialBase) VALUES (?, ?, ?)', [numerosSinComas, new Date().toLocaleString(), idBase]);
-            }
-        }
-        await connection.end();
-
-        console.log('Datos importados correctamente');
-        res.send('Datos importados correctamente');
-
-        req.flash('success', 'Exito al guardar');
-        res.redirect('/listBase/list/' + id);
     } catch (error) {
         // Manejo de errores mejorado
         console.error(error);
