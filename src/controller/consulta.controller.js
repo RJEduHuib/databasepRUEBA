@@ -7,7 +7,7 @@ consulta.iniciarSesionYConsultarMovistar = async (req, res) => {
   try {
     const browser = await puppeteer.launch({
       executablePath: chromium.path,
-      headless: false, // Mostrar el navegador con interfaz gráfica
+      headless: true, // Mostrar el navegador con interfaz gráfica
     });
     const page = await browser.newPage();
 
