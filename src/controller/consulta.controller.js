@@ -1,29 +1,28 @@
 const puppeteer = require('puppeteer');
 const ExcelJS = require('exceljs');
-
+const chromium = require('chromium');
 const consulta = {}
 
 consulta.iniciarSesionYConsultarMovistar = async (req, res) => {
   try {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+      executablePath: chromium.path,
+      headless: false, // Mostrar el navegador con interfaz gráfica
+    });
     const page = await browser.newPage();
 
-    // Iniciar sesión
     await page.goto('https://www.redcargamovil.com/Account/Login.aspx');
     await page.waitForSelector('[name="ctl00$MainContent$LoginUser$UserName"]');
     await page.type('[name="ctl00$MainContent$LoginUser$UserName"]', '1725819781');
     await page.type('[name="ctl00$MainContent$LoginUser$Password"]', 'Ditelcom123@');
     await page.click('[name="ctl00$MainContent$LoginUser$LoginButton"]');
-    await page.waitForNavigation(); // Esperar a que se complete la redirección
+    await page.waitForNavigation();
 
-    // Acceder al enlace deseado
     await page.goto('https://www.redcargamovil.com/Account/ServiciosDW.aspx?p=ue5aXpv7xKz4beF5JOsZGjDjT9VsDXyW', { timeout: 60000 });
     await page.waitForSelector('#MainContent_txtDatoConsultaProveedor');
 
-    // Arreglo de números a consultar
     const { numbers } = req.body;
 
-    // Crear un archivo Excel y agregar los encabezados
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Consulta Resultados');
     worksheet.addRow(['Número de Celular', 'Cliente', 'Valor pendiente', 'Operador', 'Fecha de consulta']);
