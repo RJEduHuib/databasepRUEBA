@@ -98,7 +98,7 @@ base.listaDetalleMovistar = async (req, res) => {
     try {
         const id = req.params.id
         const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
-        const [row2] = await sql.promise().query('SELECT * FROM InitialBases where pageIdPage = ?', [id])
+        const [row2] = await sql.promise().query('SELECT * FROM InitialBases where idInitialBase = ?', [id])
         const [row] = await sql.promise().query('SELECT * FROM detailInitialBases where InitialBaseIdInitialBase = ?', [id])
         res.render('excel/baseMovistar', { lista: row, listaPagina: pagina, listaInicial: row2, csrfToken: req.csrfToken() });
     } catch (error) {

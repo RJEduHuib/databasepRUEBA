@@ -50,8 +50,8 @@ app.set('view engine', '.hbs');
 app.use(cookieParser());
 app.use(fileUpload({ createParentPath: true }));
 app.use(morgan('dev'));
-app.use(bodyparser.urlencoded({ extended: false }));
-app.use(bodyparser.json());
+app.use(express.json({ limit: '300mb' }));
+app.use(express.urlencoded({ extended: true, limit: '300mb' }));
 app.use(session({
     key: 'session_cookie_name',
     secret: 'session_cookie_secret',
@@ -130,7 +130,6 @@ app.use(function (err, req, res, next) {
 // Configurar archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/src/public', express.static(path.join(__dirname, 'src/public'))); // agrege
-
 // Rutas - Definir tus rutas aquí
 app.use(require('./router/index.router'))
 app.use('/sell', require('./router/sell.router'))

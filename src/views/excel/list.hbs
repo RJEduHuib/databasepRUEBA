@@ -7,7 +7,7 @@
             <p>Lista de Bases de datos</p>
         </div>
         {{#each listaPagina}}
-         <div id="mas">
+        <div id="mas">
             <a href="/listBase/add/{{idPage}}">+</a>
         </div>
         {{/each}}
@@ -22,23 +22,16 @@
                     <div id="documento">
                         <p>{{baseDoc}}</p>
                     </div>
-                    {{/each}}
-                    {{#each listaOperadoraMovistar}}
                     <div id="operadora">
-                        <a href="/listBase/baseCosultaMovistar/{{pageIdPage}}"><button type="button">Movistar</button></a>
+                        <a href="/listBase/baseCosultaMovistar/{{idInitialBase}}"><button
+                                type="button">Movistar</button></a>
                     </div>
-                    {{/each}}
-                    {{#each listaOperadoraClaro}}
                     <div id="operadora1">
-                        <a href="/listBase/baseCosultaClaro/{{pageIdPage}}"><button type="button">Claro</button></a>
+                        <a href="/listBase/baseCosultaClaro/{{idInitialBase}}"><button type="button">Claro</button></a>
                     </div>
-                    {{/each}}
-                    {{#each listaOperadoraCnt}}
                     <div id="operadora2">
-                        <a href="/listBase/baseCosultaCnt/{{pageIdPage}}"><button type="button">Cnt</button></a>
+                        <a href="/listBase/baseCosultaCnt/{{idInitialBase}}"><button type="button">Cnt</button></a>
                     </div>
-                    {{/each}}
-                    {{#each lista}}
                 </div>
                 {{/each}}
             </div>
