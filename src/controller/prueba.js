@@ -38,7 +38,7 @@ const iniciarSesionYConsultarMovistar = async () => {
             const currentBatch = numbers.slice(batchStart, batchEnd);
 
             for (const number of currentBatch) {
-                contador = contador++
+                contador = contador+1
                 console.log(contador)
                 try {
                     await page.goto('https://www.redcargamovil.com/Account/ServiciosDW.aspx?p=ue5aXpv7xKz4beF5JOsZGjDjT9VsDXyW', { timeout: 150000 });
