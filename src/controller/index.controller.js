@@ -11,13 +11,23 @@ indexCtl.mostrar = async (req, res) => {
         await sql.promise().execute('CREATE OR REPLACE VIEW usuarioPagina AS SELECT p.*, r.*,u.*,g.* FROM rolUsers p JOIN rols r ON p.rolIdRol = r.idRol JOIN users u on p.userIdUser = u.idUser JOIN pages g ON p.pageIdPage = g.idPage')
         await sql.promise().execute('CREATE OR REPLACE VIEW usuariosCompletos AS SELECT u.*, r.*, o.*, p.* FROM users u JOIN rolUsers r JOIN rols o on r.rolIdRol = o.idRol JOIN permissions p ON p.rolUserIdRolUser = r.idRolUser');
         await sql.promise().execute('CREATE OR REPLACE VIEW clienteComprador AS SELECT c.*, s.*, d.* FROM clients c JOIN detailClients d ON d.clientIdClient = c.idClient JOIN sells s ON d.sellIdSell = s.idSell')
-        res.render('login/index', { csrfToken: req.csrfToken() });
+        res.render('inicio', { csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta SQL:', error.message);
         res.status(500).send('Error interno del servidor');
     }
 };
 
+indexCtl.Inicio = async(req, res) => {
+    try {
+        const [row] = await sql.promise().query('SELECT * FROM pages WHERE idPage = 1')
+        res.render('login/index',{lista: row, csrfToken: req.csrfToken()});
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error.message);
+        res.status(500).send('Error al realizar la consulta');
+        res.redirect('/')
+    }
+}
 
 indexCtl.mostrarRegistro = async (req, res) => {
     try {
@@ -26,7 +36,7 @@ indexCtl.mostrarRegistro = async (req, res) => {
             const [rows] = await sql.promise().query('SELECT MAX(idUser) AS Maximo FROM users');
             res.render('login/register', { lista: rows, csrfToken: req.csrfToken() });
         } else {
-            res.redirect('/')
+            res.redirect('/Login')
         }
     } catch (error) {
         console.error('Error en la consulta SQL:', error.message);
@@ -64,7 +74,7 @@ indexCtl.CerrarSesion = (req, res, next) => {
             return next(err);
         }
         req.flash("success", "Cerrada la Sesión con éxito.");
-        res.redirect("/");
+        res.redirect("/Login");
     });
 };
 

@@ -108,18 +108,14 @@ app.use(
 // Limitación de la tasa de solicitudes
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
-    max: 100 // limita cada IP a 100 solicitudes por windowMs
+    max: 200,    // limita cada IP a 100 solicitudes por windowMs
+    message: 'Too many requests from this IP, please try again later.'
 });
 app.use(limiter);
 
-// Protección CSRF
-app.use(csurf({ cookie: true }));
-const csrfMiddleware = csurf({
-    cookie: true
-  });
+const csrfMiddleware = csurf({ cookie: true });
 app.use(csrfMiddleware);
-
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
     if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
     // Manejo del error CSRF aquí
@@ -142,5 +138,5 @@ app.use('/clients', require('./router/client.router'))
 app.use('/sell', require('./router/sell.router'))
 app.use('/operatiors', require('./router/typeOperator'))
 // Exportar la aplicación
-
+ 
 module.exports = app

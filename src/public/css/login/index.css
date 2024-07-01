@@ -1,0 +1,174 @@
+#contenedor,
+#imagenFondo {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#imagenFondo img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#logo {
+    position: absolute;
+    width: 20%;
+    height: 40%;
+    top: 1%;
+    left: 30%;
+    opacity: 100%;
+}
+
+#logo img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+#datos {
+    position: absolute;
+    width: 54%;
+    height: 65%;
+    top: 17.5%;
+    left: 23%;
+    text-align: center;
+    background-image: linear-gradient(to bottom, #3E008C 12%, #250351 39%, #4F136C 82%);
+    border-radius: 130px;
+    text-align: center;
+    opacity: 90%;
+}
+
+#foto1{
+    position: absolute;
+    width: 50%;
+    height: 20%;
+    left: 25%;
+    top: 41%;
+}
+
+#foto1 img{
+    position: absolute;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+}
+
+#usuario{
+    position: absolute;
+    top: 15%;
+    left: 5%;
+    width: 90%;
+    height: 60%;
+    background: #0083CD;
+    border-radius: 50px;
+}
+
+#usuario input {
+    position: absolute;
+    top: 10%;
+    left: 0%;
+    background: #FFFFFF;
+    width: 100%;
+    height: 90%;
+    border-radius: 50px;
+    color: #000000;
+    font-size: 35px;
+    font-family: 'Electrolize' sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 77px;
+    align-items: center;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+#foto2{
+    position: absolute;
+    width: 50%;
+    height: 20%;
+    left: 25%;
+    top: 62%;
+}
+
+#foto2 img{
+    position: absolute;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+}
+
+#contraseña{
+    position: absolute;
+    top: 15%;
+    left: 5%;
+    width: 90%;
+    height: 60%;
+    background: #0083CD;
+    border-radius: 50px;
+}
+
+#contraseña input {
+    position: absolute;
+    top: 10%;
+    left: 0%;
+    background: #FFFFFF;
+    width: 100%;
+    height: 90%;
+    border-radius: 50px;
+    color: #000000;
+    font-size: 35px;
+    font-family: 'Electrolize' sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 77px;
+    align-items: center;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+#foto3{
+    position: absolute;
+    width: 50%;
+    height: 15%;
+    left: 25%;
+    top: 83%;
+}
+
+#foto3 img{
+    position: absolute;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+}
+
+#boton{
+    position: absolute;
+    top: 15%;
+    left: 5%;
+    width: 90%;
+    height: 70%;
+    background: #0083CD;
+    border-radius: 50px;
+}
+
+#boton button {
+    position: absolute;
+    top: 10%;
+    left: 0%;
+    background: #FFFFFF;
+    width: 100%;
+    height: 90%;
+    border-radius: 50px;
+    color: #000000;
+    font-size: 35px;
+    font-family: 'Electrolize' sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-transform: capitalize;
+}
