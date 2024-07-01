@@ -11,7 +11,8 @@ indexCtl.mostrar = async (req, res) => {
         await sql.promise().execute('CREATE OR REPLACE VIEW usuarioPagina AS SELECT p.*, r.*,u.*,g.* FROM rolUsers p JOIN rols r ON p.rolIdRol = r.idRol JOIN users u on p.userIdUser = u.idUser JOIN pages g ON p.pageIdPage = g.idPage')
         await sql.promise().execute('CREATE OR REPLACE VIEW usuariosCompletos AS SELECT u.*, r.*, o.*, p.* FROM users u JOIN rolUsers r JOIN rols o on r.rolIdRol = o.idRol JOIN permissions p ON p.rolUserIdRolUser = r.idRolUser');
         await sql.promise().execute('CREATE OR REPLACE VIEW clienteComprador AS SELECT c.*, s.*, d.* FROM clients c JOIN detailClients d ON d.clientIdClient = c.idClient JOIN sells s ON d.sellIdSell = s.idSell')
-        res.render('inicio', { csrfToken: req.csrfToken() });
+        const [row] = await sql.promise().query('SELECT * FROM pages WHERE idPage = 1')
+        res.render('inicio', { lista: row, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta SQL:', error.message);
         res.status(500).send('Error interno del servidor');

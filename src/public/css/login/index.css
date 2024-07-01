@@ -17,15 +17,19 @@
 
 #logo {
     position: absolute;
-    width: 20%;
+    width: 25%;
     height: 40%;
     top: 1%;
-    left: 30%;
+    left: 37.5%;
     opacity: 100%;
+    border-radius: 50%;
+    background: white;
 }
 
 #logo img {
     position: absolute;
+    top: 0%;
+    left: 0%;
     width: 100%;
     height: 100%;
     border-radius: 50%;
@@ -38,7 +42,7 @@
     top: 17.5%;
     left: 23%;
     text-align: center;
-    background-image: linear-gradient(to bottom, #3E008C 12%, #250351 39%, #4F136C 82%);
+    background-image: linear-gradient(to bottom, #1c008c 10%, #250351 50%);
     border-radius: 130px;
     text-align: center;
     opacity: 90%;
@@ -78,13 +82,10 @@
     height: 90%;
     border-radius: 50px;
     color: #000000;
-    font-size: 35px;
+    font-size: 25px;
     font-family: 'Electrolize' sans-serif;
     font-weight: 400;
     font-style: normal;
-    line-height: 77px;
-    align-items: center;
-    text-align: center;
     text-transform: capitalize;
 }
 
@@ -122,13 +123,10 @@
     height: 90%;
     border-radius: 50px;
     color: #000000;
-    font-size: 35px;
+    font-size: 25px;
     font-family: 'Electrolize' sans-serif;
     font-weight: 400;
     font-style: normal;
-    line-height: 77px;
-    align-items: center;
-    text-align: center;
     text-transform: capitalize;
 }
 

@@ -1,8 +1,15 @@
 <link rel="stylesheet" href="/css/inicio.css">
 <div id="inicio">
     <div id="imagen">
-        <img src="/img/fondo/fondo.png">
+        <img src="/img/fondo/fondoInicio.png">
     </div>
+    <div id="logo">
+                {{#each lista}}
+                <img src="/img/page/{{photoPage}}">
+                {{else}}
+                <img src="img/icons/noImge.png">
+                {{/each}}
+            </div>
     <div id="titulo">
         <p>BIENVENIDO A DATA BASE</p>
         <h2>¡Comienza una nueva experiencia única! </h2>

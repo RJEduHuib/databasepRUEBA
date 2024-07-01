@@ -138,5 +138,4 @@ app.use('/clients', require('./router/client.router'))
 app.use('/sell', require('./router/sell.router'))
 app.use('/operatiors', require('./router/typeOperator'))
 // Exportar la aplicación
- 
 module.exports = app
