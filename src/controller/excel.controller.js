@@ -2,6 +2,9 @@ const orm = require('../Database/dataBase.orm')
 const sql = require('../Database/dataBase.sql')
 const path = require('path')
 const fs = require('fs');
+const puppeteer = require('puppeteer');
+const ExcelJS = require('exceljs');
+const chromium = require('chromium');
 const mysql = require('mysql2/promise'); // Asegúrate de importar el módulo 'path'
 const { MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE } = require("../keys");
 
@@ -26,20 +29,28 @@ base.mostrar = async (req, res) => {
     }
 }
 
+function delay(time) {
+    return new Promise(function(resolve) {
+        setTimeout(resolve, time);
+    });
+}
+
 base.mandar = async (req, res) => {
-    const id = req.params.id
+    const id = req.params.id;
     try {
         const { idBase } = req.body;
         const imagenUsuario = req.files.excelSubir;
         const validacion = path.extname(imagenUsuario.name);
-        const extencion = [".csv"];
+        const extensionesValidas = [".csv"];
 
-        if (!extencion.includes(validacion)) {
-            return req.flash("message", "Excel no compatible.");
+        if (!extensionesValidas.includes(validacion)) {
+            req.flash("message", "Excel no compatible.");
+            return res.redirect(`/listBase/add/${id}`);
         }
 
-        if (!req.files) {
-            return req.flash("message", "Excel no insertada.");
+        if (!req.files || Object.keys(req.files).length === 0) {
+            req.flash("message", "Excel no insertado.");
+            return res.redirect(`/listBase/add/${id}`);
         }
 
         const filePath = path.join(__dirname, '../public/excel/' + imagenUsuario.name);
@@ -47,37 +58,114 @@ base.mandar = async (req, res) => {
         imagenUsuario.mv(filePath, async (err) => {
             if (err) {
                 console.error(err);
-                return req.flash("message", "Error al guardar el excel.");
-            } else {
-                sql.promise().query("INSERT INTO InitialBases(idInitialBase, baseDoc, pageIdPage) VALUES (?, ?, ?)", [idBase, imagenUsuario.name, id])
+                req.flash("message", "Error al guardar el excel.");
+                return res.redirect(`/listBase/add/${id}`);
+            }
+
+            try {
                 const csvData = fs.readFileSync(filePath, { encoding: 'utf-8' });
+                const rows = csvData.split('\n');
+                const currentTime = new Date();
+                const currentDate = currentTime.toISOString().slice(0, 10);
+                const currentMinutes = currentTime.getMinutes();
+                const workbook = new ExcelJS.Workbook();
+                const worksheet = workbook.addWorksheet('Consulta Resultados');
+                worksheet.addRow(['Número de Celular', 'Cliente', 'Valor pendiente', 'Operador', 'Fecha de consulta']);
 
-                // Parsea los datos del CSV
-                const rows = csvData.split('\n'); // Divide el contenido en filas
-                const connection = await mysql.createConnection(dbConfig);
-                for (const row of rows) {
-                    const numeroBase = row.trim(); // Elimina espacios en blanco alrededor del número
-                    if (numeroBase) { // Verifica que no sea una fila vacía
-                        const numerosSinComas = numeroBase.replace(/;/g, ''); // Elimina las comas
-                        await connection.execute('INSERT INTO detailInitialBases (numerosBaseInicial, createDetailInitialBase, InitialBaseIdInitialBase) VALUES (?, ?, ?)', [numerosSinComas, new Date().toLocaleString(), idBase]);
+                let browser;
+                try {
+                    browser = await puppeteer.launch({
+                        executablePath: chromium.path,
+                        headless: false,
+                        defaultViewport: null,
+                        timeout: 0,
+                        args: ['--disable-web-security'],
+                    });
+
+                    const page = await browser.newPage();
+                    await page.goto('https://www.redcargamovil.com/Account/Login.aspx');
+                    await page.waitForSelector('[name="ctl00$MainContent$LoginUser$UserName"]');
+                    await page.type('[name="ctl00$MainContent$LoginUser$UserName"]', '1725819781');
+                    await page.type('[name="ctl00$MainContent$LoginUser$Password"]', 'Ditelcom123@');
+                    await page.click('[name="ctl00$MainContent$LoginUser$LoginButton"]');
+                    await page.waitForNavigation();
+
+                    const urlConsulta = 'https://www.redcargamovil.com/Account/ServiciosDW.aspx?p=ue5aXpv7xKz4beF5JOsZGjDjT9VsDXyW';
+
+                    for (const row of rows) {
+                        const numeroBase = row.trim();
+                        if (numeroBase) {
+                            const numerosSinComas = numeroBase.replace(/;/g, '');
+                            console.log('Número a procesar:', numerosSinComas);
+                            try {
+                                await page.goto(urlConsulta, { waitUntil: 'networkidle0' });
+                                await page.waitForSelector('#MainContent_txtDatoConsultaProveedor');
+                                await page.type('[name="ctl00$MainContent$txtDatoConsultaProveedor"]', numerosSinComas);
+                                await page.click('[name="ctl00$MainContent$btoSubmit"]');
+
+                                // Esperar 2 segundos después de enviar el formulario
+                                await delay(3000);
+
+                                const clienteElement = await page.$('#MainContent_lblNombreCliente');
+                                const cliente = clienteElement ? await page.evaluate(el => el.textContent.trim(), clienteElement) : 'No disponible';
+                                const valorElement = await page.$('#MainContent_lblValorPendiente');
+                                const valor = valorElement ? await page.evaluate(el => el.textContent.trim(), valorElement) : 'No disponible';
+
+                                let selectedOption = 'No disponible';
+                                const selectElement = await page.$('[name="ctl00$MainContent$cboOperador"]');
+                                if (selectElement) {
+                                    selectedOption = await page.evaluate((select) => {
+                                        const selectedIndex = select.selectedIndex;
+                                        return select.options[selectedIndex].text.trim();
+                                    }, selectElement);
+                                }
+
+                                worksheet.addRow([numerosSinComas, cliente, valor, selectedOption, `${currentDate} ${currentMinutes}`]);
+
+                                // Esperar 2 segundos antes de volver atrás para asegurar que los datos se recuperen
+                                await delay(3000);
+
+                                await page.goBack({ waitUntil: 'networkidle0' });
+                            } catch (error) {
+                                console.error(`Error para número ${numerosSinComas}:`, error.message);
+
+                                // Esperar 2 segundos antes de volver atrás en caso de error
+                                await delay(3000);
+
+                                await page.goBack({ waitUntil: 'networkidle0' });
+                            }
+                        }
                     }
+                } catch (error) {
+                    console.error('Error en el proceso:', error.message);
+                } finally {
+                    if (browser) {
+                        await browser.close();
+                    }
+                    const excelFileName = `consulta_${currentDate}_${currentMinutes}min.xlsx`;
+                    const excelFilePath = path.join('C:\\Users\\Public\\Downloads', excelFileName);
+                    await workbook.xlsx.writeFile(excelFilePath);
+                    console.log('Archivo Excel creado:', excelFilePath);
+
+                    fs.unlinkSync(filePath);
+
+                    console.log('Datos importados correctamente');
+                    req.flash('success', 'Datos importados correctamente');
+                    return res.redirect(`/listBase/list/${id}`);
                 }
-                await connection.end();
-
-                console.log('Datos importados correctamente');
-                req.flash('success', 'Datos importados correctamente');
-
-                req.flash('success', 'Éxito al guardar');
-                res.redirect('/listBase/list/' + id);
+            } catch (error) {
+                console.error('Error en el proceso:', error.message);
+                req.flash('message', 'Error al guardar');
+                return res.redirect(`/listBase/add/${id}`);
             }
         });
     } catch (error) {
-        // Manejo de errores mejorado
-        console.error(error);
+        console.error('Error general:', error.message);
         req.flash('message', 'Error al guardar');
-        res.redirect('/listBase/add/' + id);
+        return res.redirect(`/listBase/add/${id}`);
     }
 };
+
 
 base.lista = async (req, res) => {
     try {

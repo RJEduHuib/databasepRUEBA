@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 const ExcelJS = require('exceljs');
 const chromium = require('chromium');
+const orm = require('../Database/dataBase.orm');
 const consulta = {}
 
 consulta.iniciarSesionYConsultarMovistar = async (req, res) => {

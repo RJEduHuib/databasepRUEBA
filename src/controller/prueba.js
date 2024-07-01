@@ -48,7 +48,7 @@ const iniciarSesionYConsultarMovistar = async () => {
                     await page.waitForSelector('[name="ctl00$MainContent$btoSubmit"]', { visible: true });
                     await page.click('[name="ctl00$MainContent$btoSubmit"]');
 
-                    await page.waitForSelector('#MainContent_lblMsgError', { timeout: 10000 });
+                    await page.waitForSelector('#MainContent_lblMsgError', { timeout: 1000 });
                     console.log(`Número incorrecto: ${number.numerosBaseInicial}`);
                 } catch (error) {
                     const clienteElement = await page.$('#MainContent_lblNombreCliente');
