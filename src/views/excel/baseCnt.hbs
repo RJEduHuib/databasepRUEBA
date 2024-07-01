@@ -1,11 +1,22 @@
-{{#each listaInicial}}
-<form action="/listBase/baseCosultaCnt/{{idInitialBase}}" method="post">
+<link rel="stylesheet" href="">
+{{#each listaPagina}}
+<form action="/listBase/baseCosultaCnt/{{idPage}}" method="post" enctype="multipart/form-data">
 {{/each}}
-    {{#each lista}}
-    <input type="text" name="numbers" id="numeros" value="{{numerosBaseInicial}}">
-    {{/each}}
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-    <div id="consulta">
-        <button type="submit">Consulta</button>
+    <div id="contenedor">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <div id="titulo">{{#each lista}}
+            <p>Agregar Datos de la lista de contacto <input type="text" name="idBase" id="numero" value="{{Maximo}}"></p>{{/each}}
+        </div>
+        <div id="datos">
+            <div id="subirExcel">
+                <p>Elegir base de datos que sea subir:</p>
+                <input type="file" name="excelSubir" id="bases" required>
+            </div>
+            <div id="butonGuardar">
+                <button type="submit">Guardar</button>
+            </div>
+        </div>
     </div>
 </form>
+
+<script src="/js/numero.js"></script>

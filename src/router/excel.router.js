@@ -1,19 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const { mostrar, mandar, lista, listaDetalleMovistar, listaDetalleClaro, listaDetalleCnt } = require("../controller/excel.controller");
+const { lista, mostrarMovistar, mandarClaro, mostrarClaro, mandarMovistar, mostrarCnt, mandarCnt } = require("../controller/excel.controller");
 const isLoggedIn = require("../lib/auth");
-const {iniciarSesionYConsultarMovistar, iniciarSesionYConsultarClaro, iniciarSesionYConsultarCnt} = require("../controller/consulta.controller");
 
 
-router.get('/add/:id', isLoggedIn, mostrar);
-router.post('/add/:id', isLoggedIn, mandar)
+router.get('/baseCosultaMovistar/:id', isLoggedIn, mostrarMovistar);
+router.post('/baseCosultaMovistar/:id', isLoggedIn, mandarMovistar)
+router.get('/baseCosultaClaro/:id', isLoggedIn, mostrarClaro);
+router.post('/baseCosultaClaro/:id', isLoggedIn, mandarClaro)
+router.get('/baseCosultaCnt/:id', isLoggedIn, mostrarCnt);
+router.post('/baseCosultaCnt/:id', isLoggedIn, mandarCnt)
 router.get('/list/:id', isLoggedIn, lista)
-router.get('/baseCosultaMovistar/:id', isLoggedIn, listaDetalleMovistar)
-router.post('/baseCosultaMovistar/:id', isLoggedIn, iniciarSesionYConsultarMovistar)
-router.get('/baseCosultaClaro/:id', isLoggedIn, listaDetalleClaro)
-router.post('/baseCosultaClaro/:id', isLoggedIn, iniciarSesionYConsultarClaro)
-router.get('/baseCosultaCnt/:id', isLoggedIn, listaDetalleCnt)
-router.post('/baseCosultaCnt/:id', isLoggedIn, iniciarSesionYConsultarCnt)
 
 
 module.exports = router;

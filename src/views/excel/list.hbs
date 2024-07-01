@@ -4,37 +4,20 @@
     {{/each}}
     <div id="contenedor">
         <div id="titulo">
-            <p>Lista de Bases de datos</p>
+            <p>Elegir de Bases de datos a ingresar</p>
         </div>
         {{#each listaPagina}}
         <div id="mas">
-            <a href="/listBase/add/{{idPage}}">+</a>
-        </div>
-        {{/each}}
-        <div id="Datos">
-            <div class="row">
-                {{#each lista}}
-                <div id="tarjeta">
-                    <div id="id">
-                        <p>Número de Lista de base</p>
-                        <p>{{idInitialBase}}</p>
-                    </div>
-                    <div id="documento">
-                        <p>{{baseDoc}}</p>
-                    </div>
-                    <div id="operadora">
-                        <a href="/listBase/baseCosultaMovistar/{{idInitialBase}}"><button
-                                type="button">Movistar</button></a>
-                    </div>
-                    <div id="operadora1">
-                        <a href="/listBase/baseCosultaClaro/{{idInitialBase}}"><button type="button">Claro</button></a>
-                    </div>
-                    <div id="operadora2">
-                        <a href="/listBase/baseCosultaCnt/{{idInitialBase}}"><button type="button">Cnt</button></a>
-                    </div>
-                </div>
-                {{/each}}
+            <div id="operadora">
+                <a href="/listBase/baseCosultaMovistar/{{idPage}}"><button type="button">Movistar</button></a>
+            </div>
+            <div id="operadora1">
+                <a href="/listBase/baseCosultaClaro/{{idPage}}"><button type="button">Claro</button></a>
+            </div>
+            <div id="operadora2">
+                <a href="/listBase/baseCosultaCnt/{{idPage}}"><button type="button">Cnt</button></a>
             </div>
         </div>
+        {{/each}}
     </div>
 </form>
