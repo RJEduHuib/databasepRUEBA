@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/login/registercss">
+<link rel="stylesheet" href="/css/login/register.css">
 <form action="/Register" method="post" enctype="multipart/form-data">
     <div id="contenedor">
         <div id="imagenFondo">
@@ -13,34 +13,50 @@
                 <img src="/img/usuario/god.jpg" id="imagenPrevisualizacion" />
             </div>
             <input type="file" name="photoUse" id="seleccionArchivos" accept="image/*" />
+            <button type="button" id="botonImagen">Imagen</button>
         </div>
         <div id="datos">
-            <div id="nombre">
-                <p>Nombre Completo:</p>
-                <input type="text" name="completeNameUser" id="completeNameUser" required>
+            <div id="foto1">
+                <img src="/img/fondo/bode.png">
+                <div id="nombre">
+                    <input type="text" name="completeNameUser" id="completeNameUser" required placeholder="Nombre Completo:">
+                </div>
             </div>
-            <div id="cedula">
-                <p>Cedula:</p>
-                <input type="text" name="identificationCardUser" id="identificationCardUser" required>
+            <div id="foto2">
+                <img src="/img/fondo/bode.png">
+                <div id="cedula">
+                    <input type="text" name="identificationCardUser" id="identificationCardUser" required placeholder="Cedula:">
+                </div>
             </div>
-            <div id="correo">
-                <p>Email:</p>
-                <input type="text" name="emailUser" id="emailUser" required>
+            <div id="foto3">
+                <img src="/img/fondo/bode.png">
+                <div id="correo">
+                    <input type="text" name="emailUser" id="emailUser" required placeholder="Email:">
+                </div>
             </div>
-            <div id="Celular">
-                <p>Celular:</p>
-                <input type="text" name="cellPhoneUser" id="cellPhoneUser" required>
+            <div id="foto4">
+                <img src="/img/fondo/bode.png">
+                <div id="Celular">
+                    <input type="text" name="cellPhoneUser" id="cellPhoneUser" required placeholder="Celular:">
+                </div>
             </div>
-            <div id="Usuario">
-                <p>Usuario:</p>
-                <input type="text" name="username" id="usernameUser" required>
+            <div id="foto5">
+                <img src="/img/fondo/bode.png">
+                <div id="Usuario">
+                    <input type="text" name="username" id="usernameUser" required placeholder="Usuario:">
+                </div>
             </div>
-            <div id="Contraseña">
-                <p>Contraseña:</p>
-                <input type="password" name="password" id="password" required>
+            <div id="foto6">
+                <img src="/img/fondo/bode.png">
+                <div id="Contraseña">
+                    <input type="password" name="password" id="password" required placeholder="Contraseña:">
+                </div>
             </div>
-            <div id="Boton">
-                <button type="submit">Guardar</button>
+            <div id="foto7">
+                <img src="/img/fondo/bode.png">
+                <div id="Boton">
+                    <button type="submit">Guardar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -48,3 +64,4 @@
 
 <script src="/js/preview.js"></script>
 <script src="/js/numero.js"></script>
+<script src="/js/botonImagen.js"></script>

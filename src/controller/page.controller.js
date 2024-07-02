@@ -6,9 +6,11 @@ const page = {}
 
 page.mostrar = async (req, res) => {
     try {
+        const id = req.params.id
+        const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE userIdUser = ?', [id]);
         const [rows] = await sql.promise().query('SELECT MAX(idPage) AS Maximo FROM pages');
         const [rows2] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE userIdUser = ?', [req.user.idUser])
-        res.render('page/add', { lista: rows, validacion: rows2, csrfToken: req.csrfToken() });
+        res.render('page/add', { lista: rows, validacion: rows2, listaPagina: pagina, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
         res.status(500).send('Error al realizar la consulta');
@@ -119,8 +121,9 @@ page.lista = async (req, res) => {
 page.traerDatos = async (req, res) => {
     try {
         const id = req.params.id
+        const [pagina] = await sql.promise().query('SELECT * FROM pages WHERE idPage = ?', [id])
         const [row] = await sql.promise().query('SELECT * FROM pages WHERE idPage = ?', [id])
-        res.render('page/Update', { lista: row, csrfToken: req.csrfToken() })
+        res.render('page/Update', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() })
     } catch (error) {
         console.error('Error en la consulta:', error.message);
         res.status(500).send('Error al realizar la consulta');

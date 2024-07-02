@@ -1,9 +1,12 @@
-<link rel="stylesheet" href=""> 
+<link rel="stylesheet" href="/css/page/lista.css">
 {{#each listaPagina}}
 <form action="/page/list/{{idPage}}" method="get">
     <div id="contenedor">
+        <div id="imagenFondo">
+            <img src="/img/fondo/fondoDetalle.png">
+        </div>
         <div id="titulo">
-            <p>Lista Pagina N° {{idPage}}</p>
+            <p>Lista página N° {{idPage}}</p>
         </div>
         <div id="logo">
             <div id="imagen">
@@ -12,35 +15,34 @@
                 </div>
             </div>
             <div id="Nombre">
-                <p>Nombre de la Pagina:</p>
-                <input type="text" name="namePage" id="namePage" required value="{{namePage}}">
+                <input type="text" name="namePage" id="namePage" required value="{{namePage}}" readonly>
             </div>
             <div id="descripcion">
-                <p>Descripción:
-                <textarea name="descriptionPage" id="descriptionPage">{{descriptionPage}}</textarea>
-                </p>
+                <p>Descripción:</p>
+                <textarea name="descriptionPage" id="descriptionPage" readonly>{{descriptionPage}}</textarea>
             </div>
             <div id="mision">
-                <p>Misión:</p>
-                <textarea name="misonPage" id="misonPage">{{misonPage}}</textarea>
+                <P>Misión</P>
+                <textarea name="misonPage" id="misonPage" readonly>{{misonPage}}</textarea>
             </div>
             <div id="vision">
                 <p>Visión:</p>
-                <textarea name="visonPage" id="visonPage">{{visonPage}}</textarea>
+                <textarea name="visonPage" id="visonPage" readonly>{{visonPage}}</textarea>
             </div>
             <div id="celular">
-                <p>Celular:</p>
-                <input type="text" name="cellPhonePage" id="cellPhonePage" value="{{cellPhonePage}}">
+                <input type="text" name="cellPhonePage" id="cellPhonePage" value="{{cellPhonePage}}" readonly>
             </div>
             <div id="correo">
-                <p>Correo Electronico:</p>
-                <input type="email" name="emailPage" id="emailPage" value="{{emailPage}}">
+                <input type="email" name="emailPage" id="emailPage" value="{{emailPage}}" readonly>
             </div>
-            <div id="boton">
-                <a href="/page/Update/{{idPage}}"><button type="button">Actualizar</button></a>
+            <div id="foto1">
+                <img src="/img/fondo/bode.png">
+                <div id="boton">
+                    <a href="/page/Update/{{idPage}}"><button type="button">Actualizar</button></a>
+                </div>
             </div>
         </div>
     </div>
-    
+
 </form>
 {{/each}}

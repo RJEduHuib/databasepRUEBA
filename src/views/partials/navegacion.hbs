@@ -1,22 +1,38 @@
+<link rel="stylesheet" href="/css/nav/nav.css">
 {{#if user}}
 <div id="nav">
     <nav>
-        <div id="Administracion">
-            {{#each listaPagina}}
-            <a href="/user/list/{{idPage}}"><button type="button">Administracion de Usuarios</button></a>
+        <div id="foto11">
+            <img src="/img/fondo/bode.png">
+            <div id="Administracion">
+                {{#each listaPagina}}
+                <a href="/user/list/{{idPage}}"><button type="button">Administracion de Usuarios</button></a>
+            </div>
         </div>
-        <div id="base">
-            <a href="/listBase/list/{{idPage}}"><button type="button">Base de Excel</button></a>
+        <div id="foto12">
+            <img src="/img/fondo/bode.png">
+            <div id="base">
+                <a href="/listBase/list/{{idPage}}"><button type="button">Base de Excel</button></a>
+            </div>
         </div>
-        <div id="rol">
-            <a href="/rol/list/{{idPage}}"><button type="button">Rol</button></a>
+        <div id="foto13">
+            <img src="/img/fondo/bode.png">
+            <div id="rol">
+                <a href="/rol/list/{{idPage}}"><button type="button">Rol</button></a>
+            </div>
         </div>
-        <div id="clientes">
-            <a href="/clients/list/{{idPage}}"><button type="button">Clientes</button></a>
+        <div id="foto14">
+            <img src="/img/fondo/bode.png">
+            <div id="clientes">
+                <a href="/clients/list/{{idPage}}"><button type="button">Clientes</button></a>
+            </div>
         </div>
-        <div id="base">
-            <a href="/operatiors/list/{{idPage}}"><button type="button">Tipo de Operadoras</button></a>
-            {{/each}}
+        <div id="foto15">
+            <img src="/img/fondo/bode.png">
+            <div id="base">
+                <a href="/operatiors/list/{{idPage}}"><button type="button">Tipo de Operadoras</button></a>
+                {{/each}}
+            </div>
         </div>
     </nav>
 </div>
