@@ -58,25 +58,24 @@ users.mandar = async (req, res) => {
             createUser: new Date().toLocaleString()
         };
         const newrol = {
+            idUnionUserRolPermission: idUser,
             rolIdRol: idRol,
-            userIdUser: req.user.idUser,
+            userIdUser: idUser,
             createUnionUserRolPermission: new Date().toLocaleString()
         }
         const newrolusers = {
-            userIdUser: idUser
+            userIdUser: idUser,
+            rolIdRol: idRol,
+            createRolUser: new Date().toLocaleString(),
+            pageIdPage: ids
         }
 
         await orm.user.create(newClient);
+        await orm.rolUser.create(newrolusers)
         await orm.unionUserRolPermissions.create(newrol)
-        let aumento = 1
         for (let i = 0; i < permiso.length; i++) {
-            await sql.promise().query('INSERT INTO detailunionuserrolpermissions(createDetailUnionUserRolPermission, unionUserRolPermissionIdUnionUserRolPermission, permissionIdPermission) VALUES (?,?,?)', [new Date().toLocaleString(), aumento, permiso[i]])
+            await sql.promise().query('INSERT INTO detailunionuserrolpermissions(createDetailUnionUserRolPermission, unionUserRolPermissionIdUnionUserRolPermission, permissionIdPermission) VALUES (?,?,?)', [new Date().toLocaleString(), idUser, permiso[i]])
         }
-
-        await orm.rolUser.findOne({ where: { rolIdRol: idRol } })
-            .then((result) => {
-                result.update(newrolusers)
-            })
 
         const imagenUsuario = req.files.photoUser;
         const validacion = path.extname(imagenUsuario.name);
@@ -139,8 +138,8 @@ users.lista = async (req, res) => {
     if (rol.userIdUser == '1' || rol.userIdUser == '2') {
         try {
             const id = req.params.id
-            const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina where idPage = ?', [id])
-            const [rows] = await sql.promise().query('SELECT * FROM usuariopagina where pageIdPage = ?', [id])
+            const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina where userIdUser = ?', [id])
+            const [rows] = await sql.promise().query('SELECT * FROM listarolusuariocreado where pageIdPage = ?', pagina[0].idPage)
             const datos = rows.map(row => ({
                 completeNameUser: descifrarDatos(row.completeNameUser),
                 identificationCardUser: descifrarDatos(row.identificationCardUser),
@@ -168,7 +167,7 @@ users.traerDatos = async (req, res) => {
     if (rol.userIdUser == '1' || rol.userIdUser == '2') {
         try {
             const id = req.params.id
-            const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
+            const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina where userIdUser = ?', [id])
             const [rows] = await sql.promise().query('SELECT * FROM usuariopagina where idUser = ?', [id])
             const datos = rows.map(row => ({
                 completeNameUser: descifrarDatos(row.completeNameUser),

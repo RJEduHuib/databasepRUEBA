@@ -378,11 +378,12 @@ base.mandarClaro = async (req, res) => {
 
                     const urlConsulta = 'https://www.redcargamovil.com/Account/ServiciosDW.aspx?p=uogPrIErIvBEWhg5sLdhqtCsb%2fR6usCU';
 
+                    const contador = 0
                     for (const row of rows) {
                         const numeroBase = row.trim();
                         if (numeroBase) {
                             const numerosSinComas = numeroBase.replace(/;/g, '');
-                            console.log('Número a procesar:', numerosSinComas);
+                            console.log('Número a procesar:', numerosSinComas, 'contador: ', contador + 1);
                             try {
                                 await page.goto(urlConsulta, { waitUntil: 'networkidle0' });
                                 await page.waitForSelector('#MainContent_txtDatoConsultaProveedor');
@@ -456,7 +457,7 @@ base.mandarClaro = async (req, res) => {
 base.lista = async (req, res) => {
     try {
         const id = req.params.id
-        const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
+        const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina where userIdUser = ?', [id])
         const [operadoraMovistar] = await sql.promise().query('SELECT * FROM typeOperators WHERE pageIdPage = ? and idTypeOperator = "1"', [id])
         const [operadoraCnt] = await sql.promise().query('SELECT * FROM typeOperators WHERE pageIdPage = ? and idTypeOperator = "2"', [id])
         const [operadoraClaro] = await sql.promise().query('SELECT * FROM typeOperators WHERE pageIdPage = ? and idTypeOperator = "3"', [id])

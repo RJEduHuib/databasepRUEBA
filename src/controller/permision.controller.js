@@ -6,15 +6,20 @@ const { validationResult } = require('express-validator');
 const permissions = {}
 
 permissions.mostrar = async (req, res) => {
-    try {
-        const id = req.params.id
-        const [rols] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ?', [id])
-        const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE pageIdPage = ?', [rols[0].pageIdPage])
-        const [rol] = await sql.promise().query('SELECT MAX(idPermission) AS maximo FROM permissions')
-        res.render('permissions/add', { listaPagina: pagina, listaRolPagina: rols, listaRol: rol, csrfToken: req.csrfToken() });
-    } catch (error) {
-        console.error('Error en la consulta:', error.message);
-        res.status(500).send('Error al realizar la consulta')
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1') {
+        try {
+            const id = req.params.id
+            const [rols] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ?', [id])
+            const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE pageIdPage = ?', [rols[0].pageIdPage])
+            const [rol] = await sql.promise().query('SELECT MAX(idPermission) AS maximo FROM permissions')
+            res.render('permissions/add', { listaPagina: pagina, listaRolPagina: rols, listaRol: rol, csrfToken: req.csrfToken() });
+        } catch (error) {
+            console.error('Error en la consulta:', error.message);
+            res.status(500).send('Error al realizar la consulta')
+        }
+    } else {
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 
@@ -45,28 +50,38 @@ permissions.mandar = async (req, res) => {
 }
 
 permissions.lista = async (req, res) => {
-    try {
-        const ids = req.params.id
-        const [idPage] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ? ', [ids])
-        const [row] = await sql.promise().query('SELECT * FROM permisosrol where rolIdRol = ? and pageIdPage = ?', [ids, idPage[0].pageIdPage])
-        const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE pageIdPage = ?', [idPage[0].pageIdPage])
-        res.render('permissions/list', { lista: row, listaPermisos: idPage, listaPagina: pagina, csrfToken: req.csrfToken() });
-    } catch (error) {
-        console.error('Error en la consulta:', error.message);
-        res.status(500).send('Error al realizar la consulta')
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1') {
+        try {
+            const ids = req.params.id
+            const [idPage] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ? ', [ids])
+            const [row] = await sql.promise().query('SELECT * FROM permisosrol where rolIdRol = ? and pageIdPage = ?', [ids, idPage[0].pageIdPage])
+            const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE pageIdPage = ?', [idPage[0].pageIdPage])
+            res.render('permissions/list', { lista: row, listaPermisos: idPage, listaPagina: pagina, csrfToken: req.csrfToken() });
+        } catch (error) {
+            console.error('Error en la consulta:', error.message);
+            res.status(500).send('Error al realizar la consulta')
+        }
+    } else {
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 
 permissions.traerDatos = async (req, res) => {
-    try {
-        const id = req.params.id
-        const [idPage] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ? ', [id])
-        const [row] = await sql.promise().query('SELECT * FROM permisosrol where idPermission = ?', [id])
-        const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE pageIdPage = ?', [idPage[0].pageIdPage])
-        res.render('permissions/update', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
-    } catch (error) {
-        console.error('Error en la consulta:', error.message);
-        res.status(500).send('Error al realizar la consulta')
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1') {
+        try {
+            const id = req.params.id
+            const [idPage] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ? ', [id])
+            const [row] = await sql.promise().query('SELECT * FROM permisosrol where idPermission = ?', [id])
+            const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE pageIdPage = ?', [idPage[0].pageIdPage])
+            res.render('permissions/update', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
+        } catch (error) {
+            console.error('Error en la consulta:', error.message);
+            res.status(500).send('Error al realizar la consulta')
+        }
+    } else {
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 
@@ -97,25 +112,30 @@ permissions.actualizar = async (req, res) => {
 
 permissions.desabilitar = async (req, res) => {
     const ids = req.params.id;
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1') {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+            const [idRol] = await sql.promise().query('SELECT rolIdRol AS idRols FROM permisosrol where idPermission = ? ', [ids])
+            const newSpeciality = {
+                statePermission: 'inhabilitado',
+                updatePermission: new Date().toLocaleString(),
+            }
+            await orm.permission.findOne({ where: { idPermission: ids } })
+                .then((result) => {
+                    result.update(newSpeciality)
+                    req.flash('success', 'Se Desabilito el Permiso')
+                    res.redirect('/permissions/list/' + idRol[0].idRols);
+                })
+        } catch (error) {
+            req.flash('message', 'Error al Desabilitar el Permiso')
+            res.redirect('/permissions/update/' + ids);
         }
-        const [idRol] = await sql.promise().query('SELECT rolIdRol AS idRols FROM permisosrol where idPermission = ? ', [ids])
-        const newSpeciality = {
-            statePermission: 'inhabilitado',
-            updatePermission: new Date().toLocaleString(),
-        }
-        await orm.permission.findOne({ where: { idPermission: ids } })
-            .then((result) => {
-                result.update(newSpeciality)
-                req.flash('success', 'Se Desabilito el Permiso')
-                res.redirect('/permissions/list/' + idRol[0].idRols);
-            })
-    } catch (error) {
-        req.flash('message', 'Error al Desabilitar el Permiso')
-        res.redirect('/permissions/update/' + ids);
+    } else {
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 

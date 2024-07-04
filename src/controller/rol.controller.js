@@ -38,6 +38,7 @@ rol.mandar = async (req, res) => {
             createRol: new Date().toLocaleString(),
         }
         const newRolUse = {
+            userIdUser: req.user.idUser,
             rolIdRol: idRol,
             createRolUser: new Date().toLocaleString(),
             pageIdPage: ids
@@ -54,19 +55,14 @@ rol.mandar = async (req, res) => {
 }
 
 rol.lista = async (req, res) => {
-    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
-    if (rol.userIdUser == '1') {
-        try {
-            const id = req.params.id
-            const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
-            const [row] = await sql.promise().query('SELECT * FROM rolspagina where pageIdPage = ? ', [id])
-            res.render('rol/list', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
-        } catch (error) {
-            console.error('Error en la consulta:', error.message);
-            res.status(500).send('Error al realizar la consulta')
-        }
-    } else {
-        return res.redirect("/listBase/list/" + req.user.idUser);
+    try {
+        const id = req.params.id
+        const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina where userIdUser = ?', [req.user.idUser])
+        const [row] = await sql.promise().query('SELECT * FROM rols')
+        res.render('rol/list', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
+    } catch (error) {
+        console.error('Error en la consulta:', error.message);
+        res.status(500).send('Error al realizar la consulta')
     }
 }
 
@@ -114,25 +110,30 @@ rol.actualizar = async (req, res) => {
 
 rol.desabilitar = async (req, res) => {
     const ids = req.params.id;
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1') {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+            const [idPage] = await sql.promise().query('SELECT pageIdPage AS paginaId FROM rolspagina where idRol = ? ', [ids])
+            const newSpeciality = {
+                stateRol: 'inhabilitado',
+                updateRol: new Date().toLocaleString(),
+            }
+            await orm.rol.findOne({ where: { idRol: ids } })
+                .then((result) => {
+                    result.update(newSpeciality)
+                    req.flash('success', 'Se Desabilito el rol')
+                    res.redirect('/rol/list/' + idPage[0].paginaId);
+                })
+        } catch (error) {
+            req.flash('message', 'Error al Desabilitar el rol')
+            res.redirect('/rol/list/' + ids);
         }
-        const [idPage] = await sql.promise().query('SELECT pageIdPage AS paginaId FROM rolspagina where idRol = ? ', [ids])
-        const newSpeciality = {
-            stateRol: 'inhabilitado',
-            updateRol: new Date().toLocaleString(),
-        }
-        await orm.rol.findOne({ where: { idRol: ids } })
-            .then((result) => {
-                result.update(newSpeciality)
-                req.flash('success', 'Se Desabilito el rol')
-                res.redirect('/rol/list/' + idPage[0].paginaId);
-            })
-    } catch (error) {
-        req.flash('message', 'Error al Desabilitar el rol')
-        res.redirect('/rol/list/' + ids);
+    } else {
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 

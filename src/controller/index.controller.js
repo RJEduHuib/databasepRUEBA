@@ -11,6 +11,7 @@ indexCtl.mostrar = async (req, res) => {
         await sql.promise().execute('CREATE OR REPLACE VIEW usuarioPagina AS SELECT p.*, r.*,u.*,g.* FROM rolUsers p JOIN rols r ON p.rolIdRol = r.idRol JOIN users u on p.userIdUser = u.idUser JOIN pages g ON p.pageIdPage = g.idPage')
         await sql.promise().execute('CREATE OR REPLACE VIEW usuariosCompletos AS SELECT u.*, r.*, o.*, p.* FROM users u JOIN rolUsers r JOIN rols o on r.rolIdRol = o.idRol JOIN permissions p ON p.rolUserIdRolUser = r.idRolUser');
         await sql.promise().execute('CREATE OR REPLACE VIEW clienteComprador AS SELECT c.*, s.*, d.* FROM clients c JOIN detailClients d ON d.clientIdClient = c.idClient JOIN sells s ON d.sellIdSell = s.idSell')
+        await sql.promise().execute('CREATE OR REPLACE VIEW listaRolUsuarioCreado AS SELECT s.*, u.*, r.*, p.*, l.pageIdPage FROM users s JOIN unionuserrolpermissions u on u.userIdUser = s.idUser JOIN rols r ON u.rolIdRol = r.idRol JOIN rolusers l on l.rolIdRol = r.idRol JOIN permissions p on p.rolUserIdRolUser = l.idRolUser')
         const [row] = await sql.promise().query('SELECT * FROM pages WHERE idPage = 1')
         res.render('inicio', { lista: row, csrfToken: req.csrfToken() });
     } catch (error) {
@@ -19,10 +20,10 @@ indexCtl.mostrar = async (req, res) => {
     }
 };
 
-indexCtl.Inicio = async(req, res) => {
+indexCtl.Inicio = async (req, res) => {
     try {
         const [row] = await sql.promise().query('SELECT * FROM pages WHERE idPage = 1')
-        res.render('login/index',{lista: row, csrfToken: req.csrfToken()});
+        res.render('login/index', { lista: row, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta SQL:', error.message);
         res.status(500).send('Error al realizar la consulta');
@@ -52,9 +53,7 @@ indexCtl.registro = passport.authenticate("local.signup", {
     failureMessage: true
 })
 
-indexCtl.login = async(req, res, next) => {
-    const rol =  await orm.rolUser.findOne({where: {userIdUser: req.user.idUser}
-    })
+indexCtl.login = async (req, res, next) => {
     passport.authenticate("local.signin", (err, user, info) => {
         if (err) {
             return next(err);
@@ -62,19 +61,25 @@ indexCtl.login = async(req, res, next) => {
         if (!user) {
             return res.redirect("/Register");
         }
-        req.logIn(user, (err) => {
+        req.logIn(user, async (err) => {
             if (err) {
                 return next(err);
             }
-            if(rol.userIdUser == '1'){
-                return res.redirect("/page/add/" + req.user.idUser);
-            }
+            try {
+                const [rows] = await sql.promise().query('SELECT * FROM rolusers WHERE userIdUser = ?', [req.user.idUser]);
+                
+                const rol = rows[0].userIdUser; 
 
-            if(rol.userIdUser == '2'){
-                return res.redirect("/user/list/" + req.user.idUser);
-            }
-            if(rol.userIdUser == '3'){
-                return res.redirect("/listBase/list/" + req.user.idUser);
+                if (rol === 1) {
+                    return res.redirect("/page/add/" + req.user.idUser);
+                } else if (rol === 2) {
+                    return res.redirect("/user/list/" + req.user.idUser);
+                } else if (rol === 3) {
+                    return res.redirect("/listBase/list/" + req.user.idUser);
+                }
+            } catch (error) {
+                console.error('Error en la consulta SQL:', error.message);
+                return res.status(500).send('Error interno del servidor');
             }
         });
     })(req, res, next);

@@ -80,7 +80,7 @@ a{
 #tarjeta {
     width: 100%;
     height: 100%;
-    max-width: 20%;
+    max-width: 25%;
     max-height: 40%;
     border-radius: 20px;
     background: white;
@@ -89,6 +89,10 @@ a{
     flex-direction: column;
     justify-content: space-between; 
     text-align: center;
+}
+
+#tarjeta p{
+    font-size: 20px;
 }
 
 #tarjeta #botones{
@@ -109,6 +113,7 @@ a{
     font-size: 15px;
     background: #27A0D4;
     cursor: pointer;
+    font-size: 20px;
 }
 
 #persios{
@@ -121,6 +126,7 @@ a{
     font-size: 15px;
     background: #27A0D4;
     cursor: pointer;
+    font-size: 20px;
 }
 
 #desavilitar{
@@ -133,6 +139,7 @@ a{
     font-size: 15px;
     background: #E72F2F;
     cursor: pointer;
+    font-size: 20px;
 }
 
 #foto{
