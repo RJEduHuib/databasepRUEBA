@@ -128,7 +128,7 @@ passport.use(
                     await orm.rolUser.create(newRolUser);
                     await orm.permission.create(newPermissions);
 
-                    const imagenUsuario = req.files.photoUse;
+                    const imagenUsuario = req.files.photoUser;
                     const validacion = path.extname(imagenUsuario.name);
                     const extencion = [".PNG", ".JPG", ".JPEG", ".GIF", ".TIF", ".png", ".jpg", ".jpeg", ".gif", ".tif"];
 

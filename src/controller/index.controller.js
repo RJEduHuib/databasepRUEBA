@@ -52,7 +52,9 @@ indexCtl.registro = passport.authenticate("local.signup", {
     failureMessage: true
 })
 
-indexCtl.login = (req, res, next) => {
+indexCtl.login = async(req, res, next) => {
+    const rol =  await orm.rolUser.findOne({where: {userIdUser: req.user.idUser}
+    })
     passport.authenticate("local.signin", (err, user, info) => {
         if (err) {
             return next(err);
@@ -64,7 +66,16 @@ indexCtl.login = (req, res, next) => {
             if (err) {
                 return next(err);
             }
-            return res.redirect("/page/add/" + req.user.idUser);
+            if(rol.userIdUser == '1'){
+                return res.redirect("/page/add/" + req.user.idUser);
+            }
+
+            if(rol.userIdUser == '2'){
+                return res.redirect("/user/list/" + req.user.idUser);
+            }
+            if(rol.userIdUser == '3'){
+                return res.redirect("/listBase/list/" + req.user.idUser);
+            }
         });
     })(req, res, next);
 };

@@ -8,9 +8,10 @@ const permissions = {}
 permissions.mostrar = async (req, res) => {
     try {
         const id = req.params.id
-        const [pagina] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ?', [id])
+        const [rols] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ?', [id])
+        const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE pageIdPage = ?', [rols[0].pageIdPage])
         const [rol] = await sql.promise().query('SELECT MAX(idPermission) AS maximo FROM permissions')
-        res.render('permissions/add', { listaRolPagina: pagina, listaRol: rol, csrfToken: req.csrfToken() });
+        res.render('permissions/add', { listaPagina: pagina, listaRolPagina: rols, listaRol: rol, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
         res.status(500).send('Error al realizar la consulta')
@@ -31,12 +32,13 @@ permissions.mandar = async (req, res) => {
             namePermission,
             statePermission: 'Activo',
             createPermission: new Date().toLocaleString(),
-            rolUserIdRolUser: ids,
+            rolUserIdRolUser: pagina[0].idRolUser,
         }
         await orm.permission.create(newSpeciality)
         req.flash('success', 'Se creo el Permiso')
         res.redirect('/permissions/list/' + pagina[0].idRol);
     } catch (error) {
+        console.log(error)
         req.flash('message', 'Error al guardar el Permiso')
         res.redirect('/permissions/add/' + ids);
     }
@@ -58,8 +60,10 @@ permissions.lista = async (req, res) => {
 permissions.traerDatos = async (req, res) => {
     try {
         const id = req.params.id
+        const [idPage] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ? ', [id])
         const [row] = await sql.promise().query('SELECT * FROM permisosrol where idPermission = ?', [id])
-        res.render('permissions/update', { lista: row, csrfToken: req.csrfToken() });
+        const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE pageIdPage = ?', [idPage[0].pageIdPage])
+        res.render('permissions/update', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
         res.status(500).send('Error al realizar la consulta')

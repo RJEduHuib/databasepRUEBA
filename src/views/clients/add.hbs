@@ -1,11 +1,15 @@
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="/css/admin/add.css">
 {{#each listaPagina}}
 <form action="/clients/add/{{idPage}}" method="post" enctype="multipart/form-data">
-{{/each}}
+    {{/each}}
     <input type="hidden" name="_csrf" value="{{ csrfToken }}">
     <div id="contenedor">
+        <div id="imagenFondo">
+            <img src="/img/fondo/fondoRegsitro.png">
+        </div>
         <div id="titulo">
-            <h1>Cliente de la Pagina N° {{#each lista}}<input type="text" name="idClient" id="numero" value="{{Maximo}}">{{/each}}
+            <h1>Cliente de la Pagina {{#each lista}}<input type="text" name="idClient" id="numero"
+                    value="{{Maximo}}">{{/each}}
             </h1>
         </div>
         <div id="imagen">
@@ -13,36 +17,56 @@
                 <img src="/img/icons/noImge.png" id="imagenPrevisualizacion" />
             </div>
             <input type="file" name="photoClient" id="seleccionArchivos" accept="image/*" />
+            <button type="button" id="botonImagen">Imagen</button>
         </div>
-        <div id="nombre">
-            <p>Nombre Completo:</p>
-            <input type="text" name="completeNameClient" id="completeNameClient" required>
-        </div>
-        <div id="cedula">
-            <p>Cedula:</p>
-            <input type="text" name="identificationCardClient" id="identificationCardClient" required>
-        </div>
-        <div id="correo">
-            <p>Email:</p>
-            <input type="text" name="emailClient" id="emailClient" required>
-        </div>
-        <div id="Celular">
-            <p>Celular:</p>
-            <input type="text" name="cellPhoneClient" id="cellPhoneClient" required>
-        </div>
-        <div id="Usuario">
-            <p>Usuario:</p>
-            <input type="text" name="usernameClient" id="usernameClient" required>
-        </div>
-        <div id="Contraseña">
-            <p>Contraseña:</p>
-            <input type="password" name="passwordClient" id="passwordClient" required>
-        </div>
-        <div id="Boton">
-            <button type="submit">Guardar</button>
+        <div id="datos">
+            <div id="foto1">
+                <img src="/img/fondo/bode.png">
+                <div id="nombre">
+                    <input type="text" name="completeNameClient" id="completeNameClient" required placeholder="Nombre Completo:">
+                </div>
+            </div>
+            <div id="foto2">
+                <img src="/img/fondo/bode.png">
+                <div id="cedula">
+                    <input type="text" name="identificationCardClient" id="identificationCardClient" required value="Cedula:">
+                </div>
+            </div>
+            <div id="foto3">
+                <img src="/img/fondo/bode.png">
+                <div id="correo">
+                    <input type="text" name="emailClient" id="emailClient"  placeholder="Email:">
+                </div>
+            </div>
+            <div id="foto4">
+                <img src="/img/fondo/bode.png">
+                <div id="Celular">
+                    <input type="text" name="cellPhoneClient" id="cellPhoneClient" required placeholder="Celular:">
+                </div>
+            </div>
+            <div id="foto5">
+                <img src="/img/fondo/bode.png">
+                <div id="Usuario">
+                    <p></p>
+                    <input type="text" name="usernameClient" id="usernameClient" required placeholder="Usuario:">
+                </div>
+            </div>
+            <div id="foto6">
+                <img src="/img/fondo/bode.png">
+                <div id="Contraseña">
+                    <input type="password" name="passwordClient" id="passwordClient" required placeholder="Contraseña:">
+                </div>
+            </div>
+            <div id="foto10">
+                <img src="/img/fondo/bode.png">
+                <div id="Boton">
+                    <button type="submit">Guardar</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>
 
 <script src="/js/numero.js"></script>
 <script src="/js/preview.js"></script>
+<script src="/js/botonImagen.js"></script>

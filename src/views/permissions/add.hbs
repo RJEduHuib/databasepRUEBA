@@ -1,8 +1,11 @@
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="/css/permisos/add.css">
 {{#each listaRolPagina}}
 <form action="/permissions/add/{{idRol}}" method="post">
     {{/each}}
     <div id="contenedor">
+        <div id="imagenFondo">
+            <img src="/img/fondo/fondoAgregar.png">
+        </div>
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <div id="titulo">
             <p>Agregar Permisos</p>
@@ -10,12 +13,19 @@
         {{#each listaRol}}
         <input type="text" name="idPermission" id="numero" value="{{maximo}}">
         {{/each}}
-        <div id="nombre">
-            <p>Nombre de Permiso:</p>
-            <input type="text" name="namePermission" id="namePermission">
-        </div>
-        <div id="boton">
-            <button type="submit">Guardar</button>
+        <div id="datos">
+            <div id="foto1">
+                <img src="/img/fondo/bode.png">
+                <div id="nombre">
+                    <input type="text" name="namePermission" id="namePermission" placeholder="Nombre de Permiso:">
+                </div>
+            </div>
+            <div id="foto2">
+                <img src="/img/fondo/bode.png">
+                <div id="boton">
+                    <button type="submit">Guardar</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>

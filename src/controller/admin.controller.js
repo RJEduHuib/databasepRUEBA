@@ -9,16 +9,21 @@ const { validationResult } = require('express-validator');
 const users = {}
 
 users.mostrar = async (req, res) => {
-    try {
-        const ids = req.params.id
-        const [rows] = await sql.promise().query('SELECT MAX(idUser) AS Maximo FROM users');
-        const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [ids])
-        const [rols] = await sql.promise().query('SELECT * FROM rolspagina WHERE pageIdPage = ? AND idRolUser > 1', [ids])
-        const [permision] = await sql.promise().query('SELECT * FROM permisosrol WHERE pageIdPage = ? AND idPermission > 1', [ids])
-        res.render('users/add', { listaPagina: pagina, listaRol: rols, lista: rows, listaPermisos: permision, csrfToken: req.csrfToken() });
-    } catch (error) {
-        console.error('Error en la consulta:', error.message);
-        res.status(500).send('Error al realizar la consulta')
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1' || rol.userIdUser == '2') {
+        try {
+            const ids = req.params.id
+            const [rows] = await sql.promise().query('SELECT MAX(idUser) AS Maximo FROM users');
+            const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [ids])
+            const [rols] = await sql.promise().query('SELECT * FROM rolspagina WHERE pageIdPage = ? AND idRolUser > 1', [ids])
+            const [permision] = await sql.promise().query('SELECT * FROM permisosrol WHERE pageIdPage = ? AND idPermission > 1', [ids])
+            res.render('users/add', { listaPagina: pagina, listaRol: rols, lista: rows, listaPermisos: permision, csrfToken: req.csrfToken() });
+        } catch (error) {
+            console.error('Error en la consulta:', error.message);
+            res.status(500).send('Error al realizar la consulta')
+        }
+    } else{
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 
@@ -57,15 +62,23 @@ users.mandar = async (req, res) => {
             userIdUser: req.user.idUser,
             createUnionUserRolPermission: new Date().toLocaleString()
         }
+        const newrolusers = {
+            userIdUser: idUser
+        }
 
         await orm.user.create(newClient);
         await orm.unionUserRolPermissions.create(newrol)
         let aumento = 1
-        for(let i = 0; i<permiso.length; i++){
-            await sql.promise().query('INSERT INTO detailunionuserrolpermissions(createDetailUnionUserRolPermission, unionUserRolPermissionIdUnionUserRolPermission, permissionIdPermission) VALUES (?,?,?)',[new Date().toLocaleString(), aumento, permiso[i]])
+        for (let i = 0; i < permiso.length; i++) {
+            await sql.promise().query('INSERT INTO detailunionuserrolpermissions(createDetailUnionUserRolPermission, unionUserRolPermissionIdUnionUserRolPermission, permissionIdPermission) VALUES (?,?,?)', [new Date().toLocaleString(), aumento, permiso[i]])
         }
 
-        const imagenUsuario = req.files.photoUse;
+        await orm.rolUser.findOne({ where: { rolIdRol: idRol } })
+            .then((result) => {
+                result.update(newrolusers)
+            })
+
+        const imagenUsuario = req.files.photoUser;
         const validacion = path.extname(imagenUsuario.name);
         const extencion = [".PNG", ".JPG", ".JPEG", ".GIF", ".TIF", ".png", ".jpg", ".jpeg", ".gif", ".tif"];
 
@@ -94,19 +107,19 @@ users.mandar = async (req, res) => {
                         },
                     },
                 };
-
+ 
                 const postRequesten = request.post({
                     url: 'http://localhost:5000/imagenEvento',
                     formData: formData,
                 });
-
+ 
                 req.setTimeout(0);
-
+ 
                 postRequesten.on('error', function (err) {
                     console.error('upload failed:', err);
                     req.flash("success", "Error al subir imagen.");
                 });
-
+ 
                 postRequesten.on('response', function (response) {
                     console.log('Upload successful! Server responded with:', response.statusCode);
                 }); */
@@ -122,26 +135,62 @@ users.mandar = async (req, res) => {
 }
 
 users.lista = async (req, res) => {
-    try {
-        const id = req.params.id
-        const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina where idPage = ?', [id])
-        const [row] = await sql.promise().query('SELECT * FROM usuariopagina where pageIdPage = ?', [id])
-        res.render('users/list', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
-    } catch (error) {
-        console.error('Error en la consulta:', error.message);
-        res.status(500).send('Error al realizar la consulta')
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1' || rol.userIdUser == '2') {
+        try {
+            const id = req.params.id
+            const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina where idPage = ?', [id])
+            const [rows] = await sql.promise().query('SELECT * FROM usuariopagina where pageIdPage = ?', [id])
+            const datos = rows.map(row => ({
+                completeNameUser: descifrarDatos(row.completeNameUser),
+                identificationCardUser: descifrarDatos(row.identificationCardUser),
+                photoUser: row.photoUser,
+                emailUser: descifrarDatos(row.emailUser),
+                cellPhoneUser: descifrarDatos(row.cellPhoneUser),
+                usernameUser: descifrarDatos(row.usernameUser),
+                stateUser: row.stateUser,
+                nameRol: row.nameRol,
+                namePermission: row.namePermission,
+                idUser: row.idUser
+            }));
+            res.render('users/list', { lista: datos, listaPagina: pagina, csrfToken: req.csrfToken() });
+        } catch (error) {
+            console.error('Error en la consulta:', error.message);
+            res.status(500).send('Error al realizar la consulta')
+        }
+    } else {
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 
 users.traerDatos = async (req, res) => {
-    try {
-        const id = req.params.id
-        const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
-        const [row] = await sql.promise().query('SELECT * FROM paginaUsuario where idUser = ?', [id])
-        res.render('users/update', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
-    } catch (error) {
-        console.error('Error en la consulta:', error.message);
-        res.status(500).send('Error al realizar la consulta')
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1' || rol.userIdUser == '2') {
+        try {
+            const id = req.params.id
+            const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
+            const [rows] = await sql.promise().query('SELECT * FROM usuariopagina where idUser = ?', [id])
+            const datos = rows.map(row => ({
+                completeNameUser: descifrarDatos(row.completeNameUser),
+                identificationCardUser: descifrarDatos(row.identificationCardUser),
+                photoUser: row.photoUser,
+                emailUser: descifrarDatos(row.emailUser),
+                cellPhoneUser: descifrarDatos(row.cellPhoneUser),
+                usernameUser: descifrarDatos(row.usernameUser),
+                stateUser: row.stateUser,
+                nameRol: row.nameRol,
+                namePermission: row.namePermission
+            }));
+            const [permisos] = await sql.promise().query('SELECT * FROM permisosrol WHERE userIdUser = ?', [id])
+            const [Totalpermisos] = await sql.promise().query('SELECT * FROM permissions')
+            const [TotalRol] = await sql.promise().query('SELECT * FROM rols')
+            res.render('users/update', { listaRol: TotalRol, lista: datos, listaPagina: pagina, listaPermisos: permisos, total: Totalpermisos, csrfToken: req.csrfToken() });
+        } catch (error) {
+            console.error('Error en la consulta:', error.message);
+            res.status(500).send('Error al realizar la consulta')
+        }
+    } else {
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 
@@ -158,7 +207,8 @@ users.actualizar = async (req, res) => {
             completeNameUser,
             identificationCardUser,
             emailUser,
-            cellPhoneUser
+            cellPhoneUser,
+            namePermission
         } = req.body;
 
         let newClient = {
@@ -188,7 +238,6 @@ users.actualizar = async (req, res) => {
 
         const newPermissions = {
             namePermission,
-            statePermission,
             createPermission: new Date().toLocaleString()
         }
 
@@ -238,19 +287,19 @@ users.actualizar = async (req, res) => {
                         },
                     },
                 };
-
+ 
                 const postRequesten = request.post({
                     url: 'http://localhost:5000/imagenEvento',
                     formData: formData,
                 });
-
+ 
                 req.setTimeout(0);
-
+ 
                 postRequesten.on('error', function (err) {
                     console.error('upload failed:', err);
                     req.flash("success", "Error al subir imagen.");
                 });
-
+ 
                 postRequesten.on('response', function (response) {
                     console.log('Upload successful! Server responded with:', response.statusCode);
                 }); */

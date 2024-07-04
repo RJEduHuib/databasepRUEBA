@@ -1,0 +1,175 @@
+#contenedor,
+#imagenFondo {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#imagenFondo img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#titulo {
+    position: absolute;
+    top: 1%;
+    left: 75%;
+    width: 20%;
+    height: 20%;
+    text-align: center;
+    font-family: 'Electrolize' sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-transform: capitalize;
+    color: #FFFFFF;
+}
+
+#numero,
+#seleccionArchivos {
+    display: none;
+}
+
+#datos{
+    position: absolute;
+    top: 25%;
+    width: 30%;
+    left: 35%;
+    height: 50%;
+    background: white;
+    border-radius: 50px;
+}
+
+#nombre,
+#estado,
+#activo,
+#desactivo,
+#boton{
+    background: #337BE7;
+    position: absolute;
+    width: 82%;
+    height: 60%;
+    top: 17%;
+    left: 8.5%;
+    border-radius: 50px;
+    text-align: center;
+}
+
+#foto1{
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    left: 0%;
+    top: 10%;
+}
+
+#foto1 img{
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    width: 100%;
+    height: 100%;
+}
+
+#foto2{
+    position: absolute;
+    width: 100%;
+    height: 18%;
+    left: 0%;
+    top: 80%;
+}
+
+#foto3{
+    position: absolute;
+    width: 100%;
+    height: 18%;
+    left: 0%;
+    top: 35%;
+}
+
+#foto3 img{
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    width: 100%;
+    height: 100%;
+}
+
+#foto2 img{
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    width: 100%;
+    height: 100%;
+}
+
+#foto4{
+    position: absolute;
+    width: 40%;
+    height: 20%;
+    left: 0%;
+    top: 58%;
+}
+
+#foto4 img{
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    width: 100%;
+    height: 100%;
+}
+
+#foto5{
+    position: absolute;
+    width: 40%;
+    height: 20%;
+    left: 60%;
+    top: 58%;
+}
+
+#foto5 img{
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    width: 100%;
+    height: 100%;
+}
+
+#foto1 input,
+#foto3 input,
+#foto4 button,
+#foto5 button,
+#foto2 button{
+    background: white;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 10%;
+    left: 0%;
+    border-radius: 50px;
+    text-align: center;
+    color: #000000;
+    font-size: 25px;
+    font-family: 'Electrolize' sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-transform: capitalize;
+}
+
+#foto1 input,
+#foto3 input{
+    height: 90%;
+}
+
+#foto4 button{
+    color: white;
+    background: green;
+}
+#foto5 button{
+    color: white;
+    background: red;
+}

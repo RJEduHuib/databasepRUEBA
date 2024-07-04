@@ -1,18 +1,29 @@
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="/css/tipoOperador/add.css">
 {{#each listaPagina}}
 <form action="/operatiors/add/{{idPage}}" method="post">
-{{/each}}
+    {{/each}}
     <div id="contenedor">
+        <div id="imagenFondo">
+            <img src="/img/fondo/fondoAgregar.png">
+        </div>
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <div id="titulo">
             <p>Agregar las Operadoras</p>
         </div>
-        <div id="nombre">
-            <p>Nombre de la Operadora:</p>
-            <input type="text" name="nameTypeOperator" id="nameTypeOperator" required>
-        </div>
-        <div id="boton">
-            <button type="submit">Guardar</button>
+        <div id="datos">
+            <div id="foto1">
+                <img src="/img/fondo/bode.png">
+                <div id="nombre">
+                    <p>Nombre de la Operadora:</p>
+                    <input type="text" name="nameTypeOperator" id="nameTypeOperator" required>
+                </div>
+            </div>
+            <div id="foto2">
+                <img src="/img/fondo/bode.png">
+                <div id="boton">
+                    <button type="submit">Guardar</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>

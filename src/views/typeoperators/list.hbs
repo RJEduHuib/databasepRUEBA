@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="/css/tipoOperador/lista.css">
 {{#each listaPagina}}
 <form action="/operatiors/list/{{idPage}}" method="get">
     {{/each}}
@@ -6,22 +6,27 @@
         <div id="titulo">
             <p>Lista de las Operadoras</p>
         </div>
+        <div id="imagenFondo">
+            <img src="/img/fondo/fondoLista.png">
+        </div>
         <div id="Datos">
             <div class="row">
                 {{#each lista}}
-                <div id="tarjeta">
+                <div id="tarjeta" class="col">
                     <div id="nombre">
                         <p>{{nameTypeOperator}}</p>
                     </div>
                     <div id="estado">
                         <p>{{stateTypeOperator}}</p>
                     </div>
+                    <div id="botones">
                     <div id="actualizar">
                         <a href="/operatiors/update/{{idTypeOperator}}"><button type="button">Actualizar</button></a>
                     </div>
                     <div id="desavilitar">
                         <a href="/operatiors/delete/{{idTypeOperator}}"><button
                                 type="button">Desabilitar</button></a>
+                    </div>
                     </div>
                 </div>
                 {{/each}}

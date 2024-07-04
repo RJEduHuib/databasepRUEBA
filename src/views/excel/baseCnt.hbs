@@ -1,22 +1,34 @@
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="/css/excel/add.css">
 {{#each listaPagina}}
 <form action="/listBase/baseCosultaCnt/{{idPage}}" method="post" enctype="multipart/form-data">
-{{/each}}
+    {{/each}}
     <div id="contenedor">
+        <div id="imagenFondo">
+            <img src="/img/fondo/fondoAgregar.png">
+        </div>
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <div id="titulo">{{#each lista}}
-            <p>Agregar Datos de la lista de contacto <input type="text" name="idBase" id="numero" value="{{Maximo}}"></p>{{/each}}
+            <p>Agregar Datos de la lista de contacto <input type="text" name="idBase" id="numero" value="{{Maximo}}">
+            </p>{{/each}}
         </div>
         <div id="datos">
-            <div id="subirExcel">
-                <p>Elegir base de datos que sea subir:</p>
-                <input type="file" name="excelSubir" id="bases" required>
+            <div id="foto1">
+                <img src="/img/fondo/bode.png">
+                <div id="subirExcel">
+                    <p>Elegir base de datos que sea subir:</p>
+                    <input type="file" name="excelSubir" id="seleccionArchivos" required>
+                    <button type="button" id="botonImagen">Elegir base de datos ha subir:</button>
+                </div>
             </div>
-            <div id="butonGuardar">
-                <button type="submit">Guardar</button>
+            <div id="foto2">
+                <img src="/img/fondo/bode.png">
+                <div id="butonGuardar">
+                    <button type="submit">Guardar</button>
+                </div>
             </div>
         </div>
     </div>
 </form>
 
 <script src="/js/numero.js"></script>
+<script src="/js/botonImagen.js"></script>

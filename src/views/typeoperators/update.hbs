@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="/css/tipoOperador/update.css">
 {{#each lista}}
 <form action="/operatiors/update/{{idTypeOperator}}" method="post">
     {{/each}}
@@ -7,23 +7,44 @@
         <div id="titulo">
             <p>Actualizar la Operadora</p>
         </div>
+        <div id="imagenFondo">
+            <img src="/img/fondo/fondoAgregar.png">
+        </div>
         {{#each lista}}
-        <div id="nombre">
-            <p>Nombre de la Operadora:</p>
-            <input type="text" name="nameTypeOperator" id="nameTypeOperator" required value="{{nameTypeOperator}}">
-        </div>
-        <div id="estado">
-            <p>Estado:</p>
-            <div id="activo">
-                <input type="text" name="stateTypeOperator" id="idestado" readonly value="{{stateTypeOperator}}">
-                <button type="button" id="activarBtn">Activar</button>
+        <div id="datos">
+            <div id="foto1">
+                <img src="/img/fondo/bode.png">
+                <div id="nombre">
+                    <p>Nombre de la Operadora:</p>
+                    <input type="text" name="nameTypeOperator" id="nameTypeOperator" required
+                        value="{{nameTypeOperator}}">
+                </div>
             </div>
-            <div id="desactivo">
-                <button type="button" id="desactivarBtn">Desactivar</button>
+            <div id="foto3">
+                <img src="/img/fondo/bode.png">
+                <div id="estado">
+                    <p>Estado:</p>
+                    <input type="text" name="stateTypeOperator" id="idestado" readonly value="{{stateTypeOperator}}">
+                </div>
             </div>
-        </div>
-        <div id="boton">
-            <button type="submit">Actualizar</button>
+            <div id="foto4">
+                <img src="/img/fondo/bode.png">
+                <div id="activo">
+                    <button type="button" id="activarBtn">Activar</button>
+                </div>
+            </div>
+            <div id="foto5">
+                <img src="/img/fondo/bode.png">
+                <div id="desactivo">
+                    <button type="button" id="desactivarBtn">Desactivar</button>
+                </div>
+            </div>
+            <div id="foto2">
+                <img src="/img/fondo/bode.png">
+                <div id="boton">
+                    <button type="submit">Actualizar</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>

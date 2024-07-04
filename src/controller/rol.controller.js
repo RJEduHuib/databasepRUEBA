@@ -6,14 +6,19 @@ const { validationResult } = require('express-validator');
 const rol = {}
 
 rol.mostrar = async (req, res) => {
-    try {
-        const id = req.params.id
-        const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
-        const [rol] = await sql.promise().query('SELECT MAX(idRol) AS maximo FROM rols')
-        res.render('rol/add', { listaPagina: pagina, listaRol: rol, csrfToken: req.csrfToken() });
-    } catch (error) {
-        console.error('Error en la consulta:', error.message);
-        res.status(500).send('Error al realizar la consulta')
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1') {
+        try {
+            const id = req.params.id
+            const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
+            const [rol] = await sql.promise().query('SELECT MAX(idRol) AS maximo FROM rols')
+            res.render('rol/add', { listaPagina: pagina, listaRol: rol, csrfToken: req.csrfToken() });
+        } catch (error) {
+            console.error('Error en la consulta:', error.message);
+            res.status(500).send('Error al realizar la consulta')
+        }
+    } else {
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 
@@ -49,26 +54,36 @@ rol.mandar = async (req, res) => {
 }
 
 rol.lista = async (req, res) => {
-    try {
-        const id = req.params.id
-        const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
-        const [row] = await sql.promise().query('SELECT * FROM rolspagina where pageIdPage = ? ', [id])
-        res.render('rol/list', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
-    } catch (error) {
-        console.error('Error en la consulta:', error.message);
-        res.status(500).send('Error al realizar la consulta')
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1') {
+        try {
+            const id = req.params.id
+            const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
+            const [row] = await sql.promise().query('SELECT * FROM rolspagina where pageIdPage = ? ', [id])
+            res.render('rol/list', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
+        } catch (error) {
+            console.error('Error en la consulta:', error.message);
+            res.status(500).send('Error al realizar la consulta')
+        }
+    } else {
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 
 rol.traerDatos = async (req, res) => {
-    try {
-        const id = req.params.id
-        const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
-        const [row] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ?', [id])
-        res.render('rol/update', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
-    } catch (error) {
-        console.error('Error en la consulta:', error.message);
-        res.status(500).send('Error al realizar la consulta')
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1') {
+        try {
+            const id = req.params.id
+            const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
+            const [row] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ?', [id])
+            res.render('rol/update', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
+        } catch (error) {
+            console.error('Error en la consulta:', error.message);
+            res.status(500).send('Error al realizar la consulta')
+        }
+    } else {
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 

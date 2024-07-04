@@ -1,64 +1,93 @@
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="/css/admin/add.css">
 {{#each listaPagina}}
 <form action="/user/add/{{idPage}}" method="post" enctype="multipart/form-data">
-{{/each}}
+    {{/each}}
     <div id="contenedor">
+        <div id="imagenFondo">
+            <img src="/img/fondo/fondoRegsitro.png">
+        </div>
+        <div id="titulo">{{#each listaPagina}}
+            <h1>Usuario de la Pagina {{namePage}}{{/each}}{{#each lista}} <input type="text" name="idUser" id="numero"
+                    value="{{Maximo}}"></h1>
+            {{/each}}
+        </div>
+        <div id="imagen">
+            <div id="cambioImagen">
+                <img src="/img/icons/noImge.png" id="imagenPrevisualizacion" />
+            </div>
+            <input type="file" name="photoUser" id="seleccionArchivos" accept="image/*" />
+            <button type="button" id="botonImagen">Imagen</button>
+        </div>
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <div id="datos">
-            <div id="titulo">{{#each lista}}
-                <h1>Usuario de la Pagina {{namePage}} N° <input type="text" name="idUser" id="numero" value="{{Maximo}}"></h1>{{/each}}
-            </div>
-            <div id="imagen">
-                <div id="cambioImagen">
-                    <img src="/img/usuario/god.jpg" id="imagenPrevisualizacion" />
+            <div id="foto1">
+                <img src="/img/fondo/bode.png">
+                <div id="nombre">
+                    <input type="text" name="completeNameUser" placeholder="Nombre Completo:" id="completeNameUser" required>
                 </div>
-                <input type="file" name="photoUse" id="seleccionArchivos" accept="image/*" />
             </div>
-            <div id="nombre">
-                <p>Nombre Completo:</p>
-                <input type="text" name="completeNameUser" id="completeNameUser" required>
+            <div id="foto2">
+                <img src="/img/fondo/bode.png">
+                <div id="cedula">
+                    <input type="text" name="identificationCardUser" placeholder="Cedula:" id="identificationCardUser" required>
+                </div>
             </div>
-            <div id="cedula">
-                <p>Cedula:</p>
-                <input type="text" name="identificationCardUser" id="identificationCardUser" required>
+            <div id="foto3">
+                <img src="/img/fondo/bode.png">
+                <div id="correo">
+                    <input type="text" name="emailUser" id="emailUser" placeholder="Correo:" required>
+                </div>
             </div>
-            <div id="correo">
-                <p>Email:</p>
-                <input type="text" name="emailUser" id="emailUser" required>
+            <div id="foto4">
+                <img src="/img/fondo/bode.png">
+                <div id="Celular">
+                    <input type="text" name="cellPhoneUser" id="cellPhoneUser" placeholder="Celular:" required>
+                </div>
             </div>
-            <div id="Celular">
-                <p>Celular:</p>
-                <input type="text" name="cellPhoneUser" id="cellPhoneUser" required>
+            <div id="foto5">
+                <img src="/img/fondo/bode.png">
+                <div id="Usuario">
+                    <input type="text" name="usernameUser" id="usernameUser" placeholder="Usuario:" required>
+                </div>
             </div>
-            <div id="Usuario">
-                <p>Usuario:</p>
-                <input type="text" name="usernameUser" id="usernameUser" required>
+            <div id="foto6">
+                <img src="/img/fondo/bode.png">
+                <div id="Contraseña">
+                    <input type="password" name="passwordUser" id="passwordUser" placeholder="Contraseña:" required>
+                </div>
             </div>
-            <div id="Contraseña">
-                <p>Contraseña:</p>
-                <input type="password" name="passwordUser" id="passwordUser" required>
+            <div id="foto7">
+                <img src="/img/fondo/bode.png">
+                <div id="seleccionRol">
+                    <select name="idRol" id="idRol">
+                        <option value="">selecion de un Rol</option>
+                        {{#each listaRol}}
+                        <option value="{{idRol}}">{{nameRol}}</option>
+                        {{/each}}
+                    </select>
+                </div>
             </div>
-            <div id="seleccionRol">
-                <p>Elegir Rol de Usuario:</p>
-                <select name="idRol" id="idRol">
-                    <option value="">selecion de un Rol</option>
-                    {{#each listaRol}}
-                    <option value="{{idRol}}">{{nameRol}}</option>
-                    {{/each}}
-                </select>
+            <div id="foto8">
+                <img src="/img/fondo/bode.png">
+                <div id="seleccionPermisos">
+                    <select name="idPermisos" id="idPermisos">
+                        <option value="">selecione los permisos</option>
+                        {{#each listaPermisos}}
+                        <option onclick="darPermisos.permisosLista()" value="{{idPermission}}">{{namePermission}}
+                        </option>
+                        {{/each}}
+                    </select>
+                </div>
             </div>
-            <div id="seleccionPermisos">
-                <p>Elegir los permisos del usuario:</p>
-                <select name="idPermisos" id="idPermisos">
-                    <option value="">selecione los permisos</option>
-                    {{#each listaPermisos}}
-                    <option onclick="darPermisos.permisosLista()" value="{{idPermission}}">{{namePermission}}</option>
-                    {{/each}}
-                </select>
+            <div id="foto9">
+                <img src="/img/fondo/bode.png">
                 <div id="permisos"></div>
             </div>
-            <div id="Boton">
-                <button type="submit">Guardar</button>
+            <div id="foto10">
+                <img src="/img/fondo/bode.png">
+                <div id="Boton">
+                    <button type="submit">Guardar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -67,3 +96,4 @@
 <script src="/js/preview.js"></script>
 <script src="/js/numero.js"></script>
 <script src="/js/seleccionPermisos.js"></script>
+<script src="/js/botonImagen.js"></script>

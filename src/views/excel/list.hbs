@@ -1,13 +1,19 @@
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="/css/excel/lista.css">
 {{#each listaPagina}}
 <form action="/listBase/list/{{idPage}}" method="get">
     {{/each}}
+    <div id="imagenFondo">
+        <img src="/img/fondo/fondoLista.png">
+    </div>
+    <div id="titulo">
+        <p>Elegir Bases de datos</p>
+    </div>
     <div id="contenedor">
-        <div id="titulo">
-            <p>Elegir de Bases de datos a ingresar</p>
-        </div>
         {{#each listaPagina}}
         <div id="mas">
+            <div id="letras">
+                <p>Seleccione la Operadora de Consulta</p>
+            </div>
             <div id="operadora">
                 <a href="/listBase/baseCosultaMovistar/{{idPage}}"><button type="button">Movistar</button></a>
             </div>
