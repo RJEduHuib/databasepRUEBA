@@ -11,7 +11,7 @@ indexCtl.mostrar = async (req, res) => {
         await sql.promise().execute('CREATE OR REPLACE VIEW usuarioPagina AS SELECT p.*, r.*,u.*,g.* FROM rolUsers p JOIN rols r ON p.rolIdRol = r.idRol JOIN users u on p.userIdUser = u.idUser JOIN pages g ON p.pageIdPage = g.idPage')
         await sql.promise().execute('CREATE OR REPLACE VIEW usuariosCompletos AS SELECT u.*, r.*, o.*, p.* FROM users u JOIN rolUsers r JOIN rols o on r.rolIdRol = o.idRol JOIN permissions p ON p.rolUserIdRolUser = r.idRolUser');
         await sql.promise().execute('CREATE OR REPLACE VIEW clienteComprador AS SELECT c.*, s.*, d.* FROM clients c JOIN detailClients d ON d.clientIdClient = c.idClient JOIN sells s ON d.sellIdSell = s.idSell')
-        await sql.promise().execute('CREATE OR REPLACE VIEW listaRolUsuarioCreado AS SELECT s.*, u.*, r.*, p.*, l.pageIdPage FROM users s JOIN unionuserrolpermissions u on u.userIdUser = s.idUser JOIN rols r ON u.rolIdRol = r.idRol JOIN rolusers l on l.rolIdRol = r.idRol JOIN permissions p on p.rolUserIdRolUser = l.idRolUser')
+        await sql.promise().execute('CREATE OR REPLACE VIEW listaRolUsuarioCreado AS SELECT s.*, u.*, r.*, p.*, l.pageIdPage FROM users s JOIN unionUserRolPermissions u on u.userIdUser = s.idUser JOIN rols r ON u.rolIdRol = r.idRol JOIN rolUsers l on l.rolIdRol = r.idRol JOIN permissions p on p.rolUserIdRolUser = l.idRolUser')
         const [row] = await sql.promise().query('SELECT * FROM pages WHERE idPage = 1')
         res.render('inicio', { lista: row, csrfToken: req.csrfToken() });
     } catch (error) {
