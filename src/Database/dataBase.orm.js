@@ -1,5 +1,6 @@
 const { Sequelize } = require("sequelize");
 const { MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE, MYSQLPORT, MYSQL_URI } = require("../keys");
+const isProduction = process.env.NODE_ENV === 'production';
 
 let sequelize;
 
@@ -11,18 +12,19 @@ if (MYSQL_URI) {
     sequelize = new Sequelize(MYSQLDATABASE, MYSQLUSER, MYSQLPASSWORD, {
         host: MYSQLHOST,
         port: MYSQLPORT,
+        logging: !isProduction, 
         dialect: 'mysql',
         pool: {
-            max: 5,
-            min: 1,
-            acquire: 30000,
-            idle: 10000
+            max: 60,
+            min: 2,
+            acquire: 80000,
+            idle: 5000
         }
     });
 }
 
 // Autenticar y sincronizar
-sequelize.authenticate()
+sequelize.authenticate({ alter: true })
     .then(() => {
         console.log("Conexión establecida con la base de datos");
     })
