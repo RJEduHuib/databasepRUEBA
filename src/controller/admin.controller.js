@@ -15,14 +15,14 @@ users.mostrar = async (req, res) => {
             const ids = req.params.id
             const [rows] = await sql.promise().query('SELECT MAX(idUser) AS Maximo FROM users');
             const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [ids])
-            const [rols] = await sql.promise().query('SELECT * FROM rolspagina WHERE pageIdPage = ? AND idRolUser > 1', [ids])
-            const [permision] = await sql.promise().query('SELECT * FROM permisosrol WHERE pageIdPage = ? AND idPermission > 1', [ids])
+            const [rols] = await sql.promise().query('SELECT * FROM rolsPagina WHERE pageIdPage = ? AND idRolUser > 1', [ids])
+            const [permision] = await sql.promise().query('SELECT * FROM permisosRol WHERE pageIdPage = ? AND idPermission > 1', [ids])
             res.render('users/add', { listaPagina: pagina, listaRol: rols, lista: rows, listaPermisos: permision, csrfToken: req.csrfToken() });
         } catch (error) {
             console.error('Error en la consulta:', error.message);
             res.status(500).send('Error al realizar la consulta')
         }
-    } else{
+    } else {
         return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
@@ -54,7 +54,7 @@ users.mandar = async (req, res) => {
             completeNameUser: cifrarDatos(completeNameUser),
             usernameUser: cifrarDatos(usernameUser),
             passwordUser: hashedPassword,
-            stateUser: 'activado',
+            stateUser: 'Activado',
             createUser: new Date().toLocaleString()
         };
         const newrol = {
@@ -63,7 +63,7 @@ users.mandar = async (req, res) => {
             userIdUser: idUser,
             createUnionUserRolPermission: new Date().toLocaleString()
         }
-        const newrolusers = {
+        const newrolUsers = {
             userIdUser: idUser,
             rolIdRol: idRol,
             createRolUser: new Date().toLocaleString(),
@@ -71,10 +71,10 @@ users.mandar = async (req, res) => {
         }
 
         await orm.user.create(newClient);
-        await orm.rolUser.create(newrolusers)
+        await orm.rolUser.create(newrolUsers)
         await orm.unionUserRolPermissions.create(newrol)
         for (let i = 0; i < permiso.length; i++) {
-            await sql.promise().query('INSERT INTO detailunionuserrolpermissions(createDetailUnionUserRolPermission, unionUserRolPermissionIdUnionUserRolPermission, permissionIdPermission) VALUES (?,?,?)', [new Date().toLocaleString(), idUser, permiso[i]])
+            await sql.promise().query('INSERT INTO detailUnionUserRolPermissions(createDetailUnionUserRolPermission, unionUserRolPermissionIdUnionUserRolPermission, permissionIdPermission) VALUES (?,?,?)', [new Date().toLocaleString(), idUser, permiso[i]])
         }
 
         const imagenUsuario = req.files.photoUser;
@@ -138,8 +138,8 @@ users.lista = async (req, res) => {
     if (rol.userIdUser == '1' || rol.userIdUser == '2') {
         try {
             const id = req.params.id
-            const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina where userIdUser = ?', [id])
-            const [rows] = await sql.promise().query('SELECT * FROM listarolusuariocreado where pageIdPage = ?', pagina[0].idPage)
+            const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina where userIdUser = ?', [id])
+            const [rows] = await sql.promise().query('SELECT * FROM listaRolUsuarioCreado where pageIdPage = ?', pagina[0].idPage)
             const datos = rows.map(row => ({
                 completeNameUser: descifrarDatos(row.completeNameUser),
                 identificationCardUser: descifrarDatos(row.identificationCardUser),
@@ -167,8 +167,8 @@ users.traerDatos = async (req, res) => {
     if (rol.userIdUser == '1' || rol.userIdUser == '2') {
         try {
             const id = req.params.id
-            const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina where userIdUser = ?', [id])
-            const [rows] = await sql.promise().query('SELECT * FROM usuariopagina where idUser = ?', [id])
+            const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina where userIdUser = ?', [id])
+            const [rows] = await sql.promise().query('SELECT * FROM usuarioPagina where idUser = ?', [id])
             const datos = rows.map(row => ({
                 completeNameUser: descifrarDatos(row.completeNameUser),
                 identificationCardUser: descifrarDatos(row.identificationCardUser),
@@ -178,9 +178,10 @@ users.traerDatos = async (req, res) => {
                 usernameUser: descifrarDatos(row.usernameUser),
                 stateUser: row.stateUser,
                 nameRol: row.nameRol,
-                namePermission: row.namePermission
+                namePermission: row.namePermission,
+                idUser: row.idUser
             }));
-            const [permisos] = await sql.promise().query('SELECT * FROM permisosrol WHERE userIdUser = ?', [id])
+            const [permisos] = await sql.promise().query('SELECT * FROM permisosRol WHERE userIdUser = ?', [id])
             const [Totalpermisos] = await sql.promise().query('SELECT * FROM permissions')
             const [TotalRol] = await sql.promise().query('SELECT * FROM rols')
             res.render('users/update', { listaRol: TotalRol, lista: datos, listaPagina: pagina, listaPermisos: permisos, total: Totalpermisos, csrfToken: req.csrfToken() });
@@ -200,64 +201,31 @@ users.actualizar = async (req, res) => {
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        const hashedPassword = await helpers.hashPassword(password);
         const {
-            idUser,
             completeNameUser,
             identificationCardUser,
             emailUser,
             cellPhoneUser,
-            namePermission
+            usernameUser,
+            passwordUser
         } = req.body;
-
+        const hashedPassword = await helpers.hashPassword(passwordUser);
         let newClient = {
-            idUser: idUser,
             identificationCardUser: cifrarDatos(identificationCardUser),
             cellPhoneUser: cifrarDatos(cellPhoneUser),
             emailUser: cifrarDatos(emailUser),
             completeNameUser: cifrarDatos(completeNameUser),
-            usernameUser: cifrarDatos(username),
+            usernameUser: cifrarDatos(usernameUser),
             passwordUser: hashedPassword,
-            stateUser: 'activado',
+            stateUser: 'Activado',
             createUser: new Date().toLocaleString()
         };
-
-        const newadmin = {
-            nameRol,
-            stateRol: 'Activo',
-            createRol: new Date().toLocaleString()
-        }
-
-        const newRolUser = {
-            createRol: new Date().toLocaleString(),
-            userIdUser: idUser,
-            rolIdRol,
-            permissionIdPermission,
-        }
-
-        const newPermissions = {
-            namePermission,
-            createPermission: new Date().toLocaleString()
-        }
-
-        await orm.user.findOne({ where: { idUser: idUser } })
+        await orm.user.findOne({ where: { idUser: ids } })
             .then((result) => {
                 result.update(newClient)
             })
-        await orm.rol.findOne({ where: { idRol: idRol } })
-            .then((result) => {
-                result.update(newadmin)
-            })
-        await orm.permission.findOne({ where: { idPermission: idPermission } })
-            .then((result) => {
-                result.update(newPermissions)
-            })
-        await orm.rolUser.findOne({ where: { idRolUser: idRolUser } })
-            .then((result) => {
-                result.update(newRolUser)
-            })
 
-        const imagenUsuario = req.files.photoUse;
+        const imagenUsuario = req.files.photoUser;
         const validacion = path.extname(imagenUsuario.name);
         const extencion = [".PNG", ".JPG", ".JPEG", ".GIF", ".TIF", ".png", ".jpg", ".jpeg", ".gif", ".tif"];
 
@@ -276,7 +244,7 @@ users.actualizar = async (req, res) => {
                 console.error(err);
                 return req.flash("message", "Error al guardar la imagen.");
             } else {
-                sql.promise().query("UPDATE users SET photoUser = ? WHERE idUser = ?", [imagenUsuario.name, idUser])
+                sql.promise().query("UPDATE users SET photoUser = ? WHERE idUser = ?", [imagenUsuario.name, ids])
                 /* const formData = {
                     image: {
                         value: fs.createReadStream(filePath),
@@ -305,34 +273,41 @@ users.actualizar = async (req, res) => {
             }
         });
         req.flash('success', 'Se Actualizo la materia')
-        res.redirect('/users/list/' + ids);
+        res.redirect('/user/list/' + req.user.idUser);
     } catch (error) {
+        console.log(error)
         req.flash('message', 'Error al Actualizar la materia')
-        res.redirect('/users/update/' + ids);
+        res.redirect('/user/update/' + ids);
     }
 }
 
 users.desabilitar = async (req, res) => {
     const ids = req.params.id;
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+    const id = req.user.idUser
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1') {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+            const { stateusers } = req.body
+            const newSpeciality = {
+                stateUser: 'inhabilitar',
+                updateUser: new Date().toLocaleString(),
+            }
+            await orm.user.findOne({ where: { idUser: ids } })
+                .then((result) => {
+                    result.update(newSpeciality)
+                    req.flash('success', 'Se Despidio al Usuario')
+                    res.redirect('/user/list/' + id);
+                })
+        } catch (error) {
+            req.flash('message', 'Error al Despedir al Usuario')
+            res.redirect('/user/list/' + id);
         }
-        const { stateusers } = req.body
-        const newSpeciality = {
-            stateusers,
-            updateusers: new Date().toLocaleString(),
-        }
-        await orm.user.findOne({ where: { idusers: ids } })
-            .then((result) => {
-                result.update(newSpeciality)
-                req.flash('success', 'Se Desabilito la materia')
-                res.redirect('/users/list/' + ids);
-            })
-    } catch (error) {
-        req.flash('message', 'Error al Desabilitar la materia')
-        res.redirect('/users/update/' + ids);
+    } else {
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 

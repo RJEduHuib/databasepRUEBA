@@ -3,20 +3,20 @@ const sql = require('../Database/dataBase.sql')
 const path = require('path')
 const { validationResult } = require('express-validator');
 
-const typeoperators = {}
+const typeOperators = {}
 
-typeoperators.mostrar = async (req, res) => {
+typeOperators.mostrar = async (req, res) => {
     try {
         const ids = req.params.id
         const [row] = await sql.promise().query('select * from pages where idPage = ?', [ids])
-        res.render('typeoperators/add', { listaPagina: row, csrfToken: req.csrfToken() });
+        res.render('typeOperators/add', { listaPagina: row, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
         res.status(500).send('Error al realizar la consulta')
     }
 }
 
-typeoperators.mandar = async (req, res) => {
+typeOperators.mandar = async (req, res) => {
     const ids = req.params.id;
     try {
         const errors = validationResult(req);
@@ -39,38 +39,38 @@ typeoperators.mandar = async (req, res) => {
     }
 }
 
-typeoperators.lista = async (req, res) => {
+typeOperators.lista = async (req, res) => {
     try {
         const id = req.params.id
         const [pagina] = await sql.promise().query('select * from pages where idPage = ?', [id])
-        const [row] = await sql.promise().query('SELECT * FROM typeoperators where pageIdPage = ?', [id])
-        res.render('typeoperators/list', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
+        const [row] = await sql.promise().query('SELECT * FROM typeOperators where pageIdPage = ?', [id])
+        res.render('typeOperators/list', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
         res.status(500).send('Error al realizar la consulta')
     }
 }
 
-typeoperators.traerDatos = async (req, res) => {
+typeOperators.traerDatos = async (req, res) => {
     try {
         const id = req.params.id
-        const [pagina] = await sql.promise().query('select * from usuariopagina where userIdUser = ?', [req.user.idUser])
-        const [row] = await sql.promise().query('SELECT * FROM typeoperators where idTypeOperator = ?', [id])
-        res.render('typeoperators/update', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
+        const [pagina] = await sql.promise().query('select * from usuarioPagina where userIdUser = ?', [req.user.idUser])
+        const [row] = await sql.promise().query('SELECT * FROM typeOperators where idTypeOperator = ?', [id])
+        res.render('typeOperators/update', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
         res.status(500).send('Error al realizar la consulta')
     }
 }
 
-typeoperators.actualizar = async (req, res) => {
+typeOperators.actualizar = async (req, res) => {
     const ids = req.params.id;
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        const [pagina] = await sql.promise().query('select * from usuariopagina where userIdUser = ?', [req.user.idUser])
+        const [pagina] = await sql.promise().query('select * from usuarioPagina where userIdUser = ?', [req.user.idUser])
         const { nameTypeOperator, stateTypeOperator } = req.body
         const newSpeciality = {
             nameTypeOperator,
@@ -90,7 +90,7 @@ typeoperators.actualizar = async (req, res) => {
     }
 }
 
-typeoperators.desabilitar = async (req, res) => {
+typeOperators.desabilitar = async (req, res) => {
     const ids = req.params.id;
     const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
     if (rol.userIdUser == '1') {
@@ -118,4 +118,4 @@ typeoperators.desabilitar = async (req, res) => {
     }
 }
 
-module.exports = typeoperators
+module.exports = typeOperators

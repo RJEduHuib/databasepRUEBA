@@ -10,7 +10,7 @@ sell.mostrar = async (req, res) => {
     try {
         const ids = req.params.id
         const [rows] = await sql.promise().query('SELECT MAX(idSell) AS Maximo FROM sells');
-        const [rows2] = await sql.promise().query('SELECT * FROM clientecompania WHERE idClient = ?', [ids])
+        const [rows2] = await sql.promise().query('SELECT * FROM clienteCompania WHERE idClient = ?', [ids])
         res.render('sell/add', { lista: rows, listaPagina: rows2, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
@@ -57,7 +57,7 @@ sell.lista = async (req, res) => {
     try {
         const id = req.params.id
         const [pagina] = await sql.promise().query('select * from pages where idPage = ?', [id])
-        const [rows] = await sql.promise().query('SELECT * FROM clientecomprador WHERE pageIdPage = ? ', [id])
+        const [rows] = await sql.promise().query('SELECT * FROM clienteComprador WHERE pageIdPage = ? ', [id])
         res.render('sell/list', { lista: rows, listaPagina:pagina, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
@@ -68,7 +68,7 @@ sell.lista = async (req, res) => {
 sell.traerDatos = async (req, res) => {
     try {
         const id = req.params.id
-        const [rows] = await sql.promise().query('SELECT * FROM clientecomprador where idSell = ?', [id])
+        const [rows] = await sql.promise().query('SELECT * FROM clienteComprador where idSell = ?', [id])
         res.render('sell/add', { listas: rows, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);

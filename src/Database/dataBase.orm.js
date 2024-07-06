@@ -53,7 +53,7 @@ const sellModel = require('../models/sell.model');
 const typeOperatorModel = require('../models/typeOperator.model');
 const userModel = require('../models/user.model');
 const unionUserRolPermissionsModel = require('../models/unionUserRolPermission')
-const detalleUnionUserRolPermissionsModel = require('../models/detailUnionUserRolPermission')
+const detalleunionUserRolPermissionsModel = require('../models/detailUnionUserRolPermission')
 const detailClientsModel = require('../models/detailClients.model')
 const baseInitialModel = require('../models/baseInicial')
 const detailBaseInitialModel = require('../models/detailBaseInitial')
@@ -70,7 +70,7 @@ const sell = sellModel(sequelize, Sequelize)
 const typeOperator = typeOperatorModel(sequelize, Sequelize)
 const user = userModel(sequelize, Sequelize)
 const unionUserRolPermissions = unionUserRolPermissionsModel(sequelize, Sequelize)
-const detalleUnionUserRolPermissions = detalleUnionUserRolPermissionsModel(sequelize, Sequelize)
+const detalleunionUserRolPermissions = detalleunionUserRolPermissionsModel(sequelize, Sequelize)
 const detailClients = detailClientsModel(sequelize, Sequelize)
 const baseInitial = baseInitialModel(sequelize, Sequelize)
 const detailBaseInitial = detailBaseInitialModel(sequelize, Sequelize)
@@ -82,11 +82,11 @@ unionUserRolPermissions.belongsTo(user)
 rol.hasMany(unionUserRolPermissions)
 unionUserRolPermissions.belongsTo(rol)
 
-unionUserRolPermissions.hasMany(detalleUnionUserRolPermissions)
-detalleUnionUserRolPermissions.belongsTo(unionUserRolPermissions)
+unionUserRolPermissions.hasMany(detalleunionUserRolPermissions)
+detalleunionUserRolPermissions.belongsTo(unionUserRolPermissions)
 
-permission.hasMany(detalleUnionUserRolPermissions)
-detalleUnionUserRolPermissions.belongsTo(permission)
+permission.hasMany(detalleunionUserRolPermissions)
+detalleunionUserRolPermissions.belongsTo(permission)
 
 user.hasMany(rolUser)
 rolUser.belongsTo(user)
@@ -152,7 +152,7 @@ module.exports = {
     typeOperator,
     user,
     unionUserRolPermissions,
-    detalleUnionUserRolPermissions,
+    detalleunionUserRolPermissions,
     detailClients,
     baseInitial,
     detailBaseInitial

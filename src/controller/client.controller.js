@@ -12,7 +12,7 @@ client.mostrar = async (req, res) => {
     try {
         const ids = req.params.id
         const [rows] = await sql.promise().query('SELECT MAX(idClient) AS Maximo FROM clients');
-        const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina where idPage = ?', [ids])
+        const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina where idPage = ?', [ids])
         res.render('clients/add', { lista: rows, listaPagina: pagina, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);
@@ -109,8 +109,8 @@ client.mandar = async (req, res) => {
 client.lista = async (req, res) => {
     try {
         const id = req.params.id
-        const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina WHERE idPage = ?', [id])
-        const [rows] = await sql.promise().query('SELECT * FROM clientecompania WHERE idPage = ?', [id])
+        const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE idPage = ?', [id])
+        const [rows] = await sql.promise().query('SELECT * FROM clienteCompania WHERE idPage = ?', [id])
         res.render('clients/list', { lista: rows, listaPagina: pagina, csrfToken: req.csrfToken() });
     } catch (error) {
         res.status(500).send('Error al realizar la consulta')
@@ -120,7 +120,7 @@ client.lista = async (req, res) => {
 client.traerDatos = async (req, res) => {
     try {
         const id = req.params.id
-        const [rows] = await sql.promise().query('SELECT * FROM clientecompania where idClient = ?', [id])
+        const [rows] = await sql.promise().query('SELECT * FROM clienteCompania where idClient = ?', [id])
         res.render('clients/update', { lista: rows, csrfToken: req.csrfToken() });
     } catch (error) {
         console.error('Error en la consulta:', error.message);

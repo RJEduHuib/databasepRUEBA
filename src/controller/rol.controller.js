@@ -55,14 +55,19 @@ rol.mandar = async (req, res) => {
 }
 
 rol.lista = async (req, res) => {
-    try {
-        const id = req.params.id
-        const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina where userIdUser = ?', [req.user.idUser])
-        const [row] = await sql.promise().query('SELECT * FROM rols')
-        res.render('rol/list', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
-    } catch (error) {
-        console.error('Error en la consulta:', error.message);
-        res.status(500).send('Error al realizar la consulta')
+    const rol = await orm.rolUser.findOne({ where: { userIdUser: req.user.idUser } })
+    if (rol.userIdUser == '1' || rol.userIdUser == '2') {
+        try {
+            const id = req.params.id
+            const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina where userIdUser = ?', [req.user.idUser])
+            const [row] = await sql.promise().query('SELECT * FROM rols')
+            res.render('rol/list', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
+        } catch (error) {
+            console.error('Error en la consulta:', error.message);
+            res.status(500).send('Error al realizar la consulta')
+        }
+    } else {
+        return res.redirect("/listBase/list/" + req.user.idUser);
     }
 }
 
@@ -72,7 +77,7 @@ rol.traerDatos = async (req, res) => {
         try {
             const id = req.params.id
             const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [id])
-            const [row] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ?', [id])
+            const [row] = await sql.promise().query('SELECT * FROM rolsPagina where idRol = ?', [id])
             res.render('rol/update', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
         } catch (error) {
             console.error('Error en la consulta:', error.message);
@@ -117,7 +122,7 @@ rol.desabilitar = async (req, res) => {
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
-            const [idPage] = await sql.promise().query('SELECT pageIdPage AS paginaId FROM rolspagina where idRol = ? ', [ids])
+            const [idPage] = await sql.promise().query('SELECT pageIdPage AS paginaId FROM rolsPagina where idRol = ? ', [ids])
             const newSpeciality = {
                 stateRol: 'inhabilitado',
                 updateRol: new Date().toLocaleString(),

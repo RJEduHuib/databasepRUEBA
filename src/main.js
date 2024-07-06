@@ -6,6 +6,7 @@ const { exec } = require('child_process');
 
 let mainWindow;
 let consoleWindow;
+const port = process.env.PORT || 4001; 
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -20,7 +21,6 @@ function createWindow() {
   expressApp.use(cors());
 
   // Iniciar el servidor Express
-  const port = process.env.PORT || 4001; // Cambiar el puerto a 4001 si 4000 está en uso
   const server = expressApp.listen(port, () => {
     console.log(`Servidor corriendo en el puerto ${port}`);
   });
@@ -48,7 +48,7 @@ function createWindow() {
   // Crear el menú de la aplicación
   const menuTemplate = [
     {
-      label: 'View',
+      label: 'Opciones',
       submenu: [
         {
           label: 'Open Console',
@@ -61,6 +61,26 @@ function createWindow() {
           click() {
             closeConsole();
           }
+        },
+        {
+          label: 'Cerrar Sesión',
+          click() {
+            cerrarSesion();
+          }
+        },
+        {
+          label: 'Regresar a la Pestaña Anterior',
+          click() {
+            if (mainWindow.webContents.canGoBack()) {
+              mainWindow.webContents.goBack();
+            }
+          }
+        },
+        {
+          label: 'Reiniciar Sistema',
+          click() {
+            restartSystem();
+          }
         }
       ]
     }
@@ -72,12 +92,24 @@ function createWindow() {
 
 function openConsole() {
   // Abre la consola del sistema operativo
-  exec(`start cmd /k "echo Starting Console... && echo && node ./src/app.js"`, (err, stdout, stderr) => {
+  exec(`start cmd /k "echo Starting Console... && echo && node ./src/index.js"`, (err, stdout, stderr) => {
     if (err) {
       console.error(err);
       return;
     }
   });
+}
+
+function cerrarSesion() {
+  if (mainWindow) {
+    mainWindow.loadURL(`http://localhost:${port}/closeSection`); // Asegúrate de tener una ruta de cierre de sesión en tu aplicación Express
+  }
+}
+
+function restartSystem() {
+  // Reiniciar la aplicación de Electron
+  app.relaunch();
+  app.exit(0);
 }
 
 app.on('ready', createWindow);

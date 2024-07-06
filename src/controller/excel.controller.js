@@ -457,7 +457,7 @@ base.mandarClaro = async (req, res) => {
 base.lista = async (req, res) => {
     try {
         const id = req.params.id
-        const [pagina] = await sql.promise().query('SELECT * FROM usuariopagina where userIdUser = ?', [id])
+        const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina where userIdUser = ?', [id])
         const [operadoraMovistar] = await sql.promise().query('SELECT * FROM typeOperators WHERE pageIdPage = ? and idTypeOperator = "1"', [id])
         const [operadoraCnt] = await sql.promise().query('SELECT * FROM typeOperators WHERE pageIdPage = ? and idTypeOperator = "2"', [id])
         const [operadoraClaro] = await sql.promise().query('SELECT * FROM typeOperators WHERE pageIdPage = ? and idTypeOperator = "3"', [id])

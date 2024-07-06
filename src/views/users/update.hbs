@@ -1,12 +1,12 @@
 <link rel="stylesheet" href="/css/admin/add.css">
 {{#each lista}}
-<form action="/user/add/{{idPage}}" method="post" enctype="multipart/form-data">
+<form action="/user/update/{{idUser}}" method="post" enctype="multipart/form-data">
     <div id="contenedor">
         <div id="imagenFondo">
             <img src="/img/fondo/fondoRegsitro.png">
         </div>
         <div id="titulo">
-            <h1>Usuario de la Pagina {{namePage}}
+            <h1>Usuario de la Pagina
         </div>
         <div id="imagen">
             <div id="cambioImagen">
@@ -28,7 +28,7 @@
                 <img src="/img/fondo/bode.png">
                 <div id="cedula">
                     <input type="text" name="identificationCardUser" placeholder="Cedula:" id="identificationCardUser"
-                        required {{identificationCardUser}}>
+                        required value="{{identificationCardUser}}">
                 </div>
             </div>
             <div id="foto3">

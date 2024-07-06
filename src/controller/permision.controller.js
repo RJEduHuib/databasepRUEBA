@@ -10,7 +10,7 @@ permissions.mostrar = async (req, res) => {
     if (rol.userIdUser == '1') {
         try {
             const id = req.params.id
-            const [rols] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ?', [id])
+            const [rols] = await sql.promise().query('SELECT * FROM rolsPagina where idRol = ?', [id])
             const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE pageIdPage = ?', [rols[0].pageIdPage])
             const [rol] = await sql.promise().query('SELECT MAX(idPermission) AS maximo FROM permissions')
             res.render('permissions/add', { listaPagina: pagina, listaRolPagina: rols, listaRol: rol, csrfToken: req.csrfToken() });
@@ -30,7 +30,7 @@ permissions.mandar = async (req, res) => {
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        const [pagina] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ?', [ids])
+        const [pagina] = await sql.promise().query('SELECT * FROM rolsPagina where idRol = ?', [ids])
         const { idPermission, namePermission } = req.body
         const newSpeciality = {
             idPermission,
@@ -54,8 +54,8 @@ permissions.lista = async (req, res) => {
     if (rol.userIdUser == '1') {
         try {
             const ids = req.params.id
-            const [idPage] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ? ', [ids])
-            const [row] = await sql.promise().query('SELECT * FROM permisosrol where rolIdRol = ? and pageIdPage = ?', [ids, idPage[0].pageIdPage])
+            const [idPage] = await sql.promise().query('SELECT * FROM rolsPagina where idRol = ? ', [ids])
+            const [row] = await sql.promise().query('SELECT * FROM permisosRol where rolIdRol = ? and pageIdPage = ?', [ids, idPage[0].pageIdPage])
             const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE pageIdPage = ?', [idPage[0].pageIdPage])
             res.render('permissions/list', { lista: row, listaPermisos: idPage, listaPagina: pagina, csrfToken: req.csrfToken() });
         } catch (error) {
@@ -72,8 +72,8 @@ permissions.traerDatos = async (req, res) => {
     if (rol.userIdUser == '1') {
         try {
             const id = req.params.id
-            const [idPage] = await sql.promise().query('SELECT * FROM rolspagina where idRol = ? ', [id])
-            const [row] = await sql.promise().query('SELECT * FROM permisosrol where idPermission = ?', [id])
+            const [idPage] = await sql.promise().query('SELECT * FROM rolsPagina where idRol = ? ', [id])
+            const [row] = await sql.promise().query('SELECT * FROM permisosRol where idPermission = ?', [id])
             const [pagina] = await sql.promise().query('SELECT * FROM usuarioPagina WHERE pageIdPage = ?', [idPage[0].pageIdPage])
             res.render('permissions/update', { lista: row, listaPagina: pagina, csrfToken: req.csrfToken() });
         } catch (error) {
@@ -119,7 +119,7 @@ permissions.desabilitar = async (req, res) => {
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
-            const [idRol] = await sql.promise().query('SELECT rolIdRol AS idRols FROM permisosrol where idPermission = ? ', [ids])
+            const [idRol] = await sql.promise().query('SELECT rolIdRol AS idRols FROM permisosRol where idPermission = ? ', [ids])
             const newSpeciality = {
                 statePermission: 'inhabilitado',
                 updatePermission: new Date().toLocaleString(),

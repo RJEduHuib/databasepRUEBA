@@ -66,7 +66,7 @@ indexCtl.login = async (req, res, next) => {
                 return next(err);
             }
             try {
-                const [rows] = await sql.promise().query('SELECT * FROM rolusers WHERE userIdUser = ?', [req.user.idUser]);
+                const [rows] = await sql.promise().query('SELECT * FROM rolUsers WHERE userIdUser = ?', [req.user.idUser]);
                 
                 const rol = rows[0].userIdUser; 
 
@@ -91,7 +91,7 @@ indexCtl.CerrarSesion = (req, res, next) => {
             return next(err);
         }
         req.flash("success", "Cerrada la Sesión con éxito.");
-        res.redirect("/Login");
+        res.redirect("/");
     });
 };
 

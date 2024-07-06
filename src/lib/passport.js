@@ -49,14 +49,16 @@ passport.use(
             }
             const users = await sql.query('select * from users')
             for (let i = 0; i < users.length; i++) {
-                const user = await orm.user.findOne({ where: { usernameUser: users[i].usernameUser } });
-                let decryptedUsername = descifrarDatos(user.usernameUser)
-                if (decryptedUsername == username) {
-                    const validPassword = await bcrypt.compare(password, user.passwordUser);
-                    if (validPassword) {
-                        return done(null, user, req.flash("success", "Bienvenido" + " " + username));
-                    } else {
-                        return done(null, false, req.flash("message", "Datos incorrecta"));
+                const user = await orm.user.findOne({ where: { usernameUser: users[i].usernameUser, stateUser: 'Activado' } });
+                if (user != null) {
+                    let decryptedUsername = descifrarDatos(user.usernameUser)
+                    if (decryptedUsername == username) {
+                        const validPassword = await bcrypt.compare(password, user.passwordUser);
+                        if (validPassword) {
+                            return done(null, user, req.flash("success", "Bienvenido" + " " + username));
+                        } else {
+                            return done(null, false, req.flash("message", "Datos incorrecta"));
+                        }
                     }
                 }
             }
@@ -100,7 +102,7 @@ passport.use(
                         usernameUser: cifrarDatos(username),
                         passwordUser: hashedPassword,
                         rolUser: 'superAdministrador',
-                        stateUser: 'activado',
+                        stateUser: 'Activado',
                         createUser: new Date().toLocaleString()
                     };
 
@@ -128,53 +130,7 @@ passport.use(
                     await orm.rolUser.create(newRolUser);
                     await orm.permission.create(newPermissions);
 
-                    const imagenUsuario = req.files.photoUser;
-                    const validacion = path.extname(imagenUsuario.name);
-                    const extencion = [".PNG", ".JPG", ".JPEG", ".GIF", ".TIF", ".png", ".jpg", ".jpeg", ".gif", ".tif"];
-
-                    if (!extencion.includes(validacion)) {
-                        return req.flash("message", "Imagen no compatible.");
-                    }
-
-                    if (!req.files) {
-                        return req.flash("message", "Imagen no insertada.");
-                    }
-
-                    const filePath = __dirname + '/../public/img/usuario/' + imagenUsuario.name;
-
-                    imagenUsuario.mv(filePath, (err) => {
-                        if (err) {
-                            console.error(err);
-                            return req.flash("message", "Error al guardar la imagen.");
-                        } else {
-                            sql.promise().query("UPDATE users SET photoUser = ? WHERE idUser = ?", [imagenUsuario.name, idUser])
-                            /* const formData = {
-                                image: {
-                                    value: fs.createReadStream(filePath),
-                                    options: {
-                                        filename: imagenUsuario.name,
-                                        contentType: imagenUsuario.mimetype,
-                                    },
-                                },
-                            };
-    
-                            const postRequesten = request.post({
-                                url: 'http://localhost:5000/imagenEvento',
-                                formData: formData,
-                            });
-    
-                            req.setTimeout(0);
-    
-                            postRequesten.on('error', function (err) {
-                                console.error('upload failed:', err);
-                                req.flash("success", "Error al subir imagen.");
-                            });
-    
-                            postRequesten.on('response', function (response) {
-                                console.log('Upload successful! Server responded with:', response.statusCode);
-                            }); */
-                        }
-                    });
+                    typeOperators
 
                     newClient.id = guardar.insertId
                     return done(null, newClient);
