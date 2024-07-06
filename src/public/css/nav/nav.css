@@ -86,3 +86,112 @@
     background: white;
 }
 
+@media (max-width: 1200px) {
+    #nav {
+        width: 90%;
+    }
+
+    #foto11, #foto12, #foto13, #foto14, #foto15 {
+        width: 15vw;
+    }
+
+    #foto11 {
+        left: 2vw;
+    }
+
+    #foto12 {
+        left: 18vw;
+    }
+
+    #foto13 {
+        left: 34vw;
+    }
+
+    #foto14 {
+        left: 50vw;
+    }
+
+    #foto15 {
+        left: 66vw;
+    }
+
+    #foto11 button,
+    #foto12 button,
+    #foto13 button,
+    #foto14 button,
+    #foto15 button {
+        font-size: 1.8vh;
+    }
+}
+
+@media (max-width: 768px) {
+    #nav {
+        width: 100%;
+    }
+
+    #foto11, #foto12, #foto13, #foto14, #foto15 {
+        width: 20vw;
+    }
+
+    #foto11 {
+        left: 2vw;
+    }
+
+    #foto12 {
+        left: 24vw;
+    }
+
+    #foto13 {
+        left: 46vw;
+    }
+
+    #foto14 {
+        left: 68vw;
+    }
+
+    #foto15 {
+        left: 90vw;
+    }
+
+    #foto11 button,
+    #foto12 button,
+    #foto13 button,
+    #foto14 button,
+    #foto15 button {
+        font-size: 1.5vh;
+    }
+}
+
+@media (max-width: 480px) {
+    #nav {
+        width: 100%;
+        height: auto;
+    }
+
+    #foto11, #foto12, #foto13, #foto14, #foto15 {
+        width: 30vw;
+        height: auto;
+    }
+
+    #foto11 {
+        left: 2vw;
+    }
+
+    #foto12 {
+        left: 34vw;
+    }
+
+    #foto13 {
+        left: 66vw;
+    }
+
+    #foto14, #foto15 {
+        display: none; /* Ocultar elementos si no caben en pantallas muy pequeñas */
+    }
+
+    #foto11 button,
+    #foto12 button,
+    #foto13 button {
+        font-size: 1.2vh;
+    }
+}

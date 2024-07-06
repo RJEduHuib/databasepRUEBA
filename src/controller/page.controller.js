@@ -52,53 +52,58 @@ page.mandar = async (req, res) => {
             .then((result) => {
                 result.update(newRol)
             })
-        const imagenUsuario = req.files.photoPage;
-        const validacion = path.extname(imagenUsuario.name);
-        const extencion = [".PNG", ".JPG", ".JPEG", ".GIF", ".TIF", ".png", ".jpg", ".jpeg", ".gif", ".tif"];
+        if (req.files && req.files.photoPage) {
+            const imagenUsuario = req.files.photoPage;
+            const validacion = path.extname(imagenUsuario.name);
+            const extencion = [".PNG", ".JPG", ".JPEG", ".GIF", ".TIF", ".png", ".jpg", ".jpeg", ".gif", ".tif"];
 
-        if (!extencion.includes(validacion)) {
-            return req.flash("message", "Imagen no compatible.");
-        }
-
-        if (!req.files) {
-            return req.flash("message", "Imagen no insertada.");
-        }
-
-        const filePath = __dirname + '/../public/img/page/' + imagenUsuario.name;
-
-        imagenUsuario.mv(filePath, (err) => {
-            if (err) {
-                console.error(err);
-                return req.flash("message", "Error al guardar la imagen.");
-            } else {
-                sql.promise().query("UPDATE pages SET photoPage = ? WHERE idPage = ?", [imagenUsuario.name, idPage])
-                /* const formData = {
-                    image: {
-                        value: fs.createReadStream(filePath),
-                        options: {
-                            filename: imagenUsuario.name,
-                            contentType: imagenUsuario.mimetype,
-                        },
-                    },
-                };
- 
-                const postRequesten = request.post({
-                    url: 'http://localhost:5000/imagenEvento',
-                    formData: formData,
-                });
- 
-                req.setTimeout(0);
- 
-                postRequesten.on('error', function (err) {
-                    console.error('upload failed:', err);
-                    req.flash("success", "Error al subir imagen.");
-                });
- 
-                postRequesten.on('response', function (response) {
-                    console.log('Upload successful! Server responded with:', response.statusCode);
-                }); */
+            if (!extencion.includes(validacion)) {
+                return req.flash("message", "Imagen no compatible.");
             }
-        });
+
+            if (!req.files) {
+                return req.flash("message", "Imagen no insertada.");
+            }
+
+            const filePath = __dirname + '/../public/img/page/' + imagenUsuario.name;
+
+            imagenUsuario.mv(filePath, (err) => {
+                if (err) {
+                    console.error(err);
+                    return req.flash("message", "Error al guardar la imagen.");
+                } else {
+                    sql.promise().query("UPDATE pages SET photoPage = ? WHERE idPage = ?", [imagenUsuario.name, idPage])
+                    /* const formData = {
+                        image: {
+                            value: fs.createReadStream(filePath),
+                            options: {
+                                filename: imagenUsuario.name,
+                                contentType: imagenUsuario.mimetype,
+                            },
+                        },
+                    };
+     
+                    const postRequesten = request.post({
+                        url: 'http://localhost:5000/imagenEvento',
+                        formData: formData,
+                    });
+     
+                    req.setTimeout(0);
+     
+                    postRequesten.on('error', function (err) {
+                        console.error('upload failed:', err);
+                        req.flash("success", "Error al subir imagen.");
+                    });
+     
+                    postRequesten.on('response', function (response) {
+                        console.log('Upload successful! Server responded with:', response.statusCode);
+                    }); */
+                }
+            });
+        } else {
+            req.flash("message", "Imagen no insertada.");
+        }
+
         await sql.promise().execute('INSERT INTO typeOperators(idTypeOperator, nameTypeOperator, stateTypeOperator, createTypeOperator, pageIdPage) VALUES ("1","Movistar", "Activo", ?, ?)', [new Date().toLocaleString(), idPage])
         await sql.promise().execute('INSERT INTO typeOperators(idTypeOperator, nameTypeOperator, stateTypeOperator, createTypeOperator, pageIdPage) VALUES ("2","Cnt", "Activo", ?, ?)', [new Date().toLocaleString(), idPage])
         await sql.promise().execute('INSERT INTO typeOperators(idTypeOperator, nameTypeOperator, stateTypeOperator, createTypeOperator, pageIdPage) VALUES ("3","Claro", "Activo", ?, ?)', [new Date().toLocaleString(), idPage])
@@ -167,53 +172,58 @@ page.Actualizar = async (req, res) => {
             .then((result) => {
                 result.update(newPage)
             })
-        const imagenUsuario = req.files.photoPage;
-        const validacion = path.extname(imagenUsuario.name);
-        const extencion = [".PNG", ".JPG", ".JPEG", ".GIF", ".TIF", ".png", ".jpg", ".jpeg", ".gif", ".tif"];
+        if (req.files && req.files.photoPage) {
+            const imagenUsuario = req.files.photoPage;
+            const validacion = path.extname(imagenUsuario.name);
+            const extencion = [".PNG", ".JPG", ".JPEG", ".GIF", ".TIF", ".png", ".jpg", ".jpeg", ".gif", ".tif"];
 
-        if (!extencion.includes(validacion)) {
-            return req.flash("message", "Imagen no compatible.");
-        }
-
-        if (!req.files) {
-            return req.flash("message", "Imagen no insertada.");
-        }
-
-        const filePath = __dirname + '/../public/img/page/' + imagenUsuario.name;
-
-        imagenUsuario.mv(filePath, (err) => {
-            if (err) {
-                console.error(err);
-                return req.flash("message", "Error al guardar la imagen.");
-            } else {
-                sql.promise().query("UPDATE pages SET photoPage = ? WHERE idPage = ?", [imagenUsuario.name, ids])
-                /* const formData = {
-                    image: {
-                        value: fs.createReadStream(filePath),
-                        options: {
-                            filename: imagenUsuario.name,
-                            contentType: imagenUsuario.mimetype,
-                        },
-                    },
-                };
- 
-                const postRequesten = request.post({
-                    url: 'http://localhost:5000/imagenEvento',
-                    formData: formData,
-                });
- 
-                req.setTimeout(0);
- 
-                postRequesten.on('error', function (err) {
-                    console.error('upload failed:', err);
-                    req.flash("success", "Error al subir imagen.");
-                });
- 
-                postRequesten.on('response', function (response) {
-                    console.log('Upload successful! Server responded with:', response.statusCode);
-                }); */
+            if (!extencion.includes(validacion)) {
+                return req.flash("message", "Imagen no compatible.");
             }
-        });
+
+            if (!req.files) {
+                return req.flash("message", "Imagen no insertada.");
+            }
+
+            const filePath = __dirname + '/../public/img/page/' + imagenUsuario.name;
+
+            imagenUsuario.mv(filePath, (err) => {
+                if (err) {
+                    console.error(err);
+                    return req.flash("message", "Error al guardar la imagen.");
+                } else {
+                    sql.promise().query("UPDATE pages SET photoPage = ? WHERE idPage = ?", [imagenUsuario.name, ids])
+                    /* const formData = {
+                        image: {
+                            value: fs.createReadStream(filePath),
+                            options: {
+                                filename: imagenUsuario.name,
+                                contentType: imagenUsuario.mimetype,
+                            },
+                        },
+                    };
+     
+                    const postRequesten = request.post({
+                        url: 'http://localhost:5000/imagenEvento',
+                        formData: formData,
+                    });
+     
+                    req.setTimeout(0);
+     
+                    postRequesten.on('error', function (err) {
+                        console.error('upload failed:', err);
+                        req.flash("success", "Error al subir imagen.");
+                    });
+     
+                    postRequesten.on('response', function (response) {
+                        console.log('Upload successful! Server responded with:', response.statusCode);
+                    }); */
+                }
+            });
+        } else {
+            req.flash("message", "Imagen no insertada.");
+        }
+
         req.flash('success', 'Exito al guardar');
         res.redirect('/page/list/' + id);
     } catch (error) {

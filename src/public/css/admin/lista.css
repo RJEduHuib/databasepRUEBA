@@ -51,6 +51,11 @@
     font-size: 30px;
     background: #000213;
 }
+#titulo p{
+    position: absolute;
+    top: 0%;
+    width: 100%;
+}
 
 #mas{
     position: absolute;

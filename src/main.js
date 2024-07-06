@@ -16,13 +16,13 @@ function createWindow() {
       nodeIntegration: true
     }
   });
-
+  mainWindow.maximize();
   // Configurar CORS
   expressApp.use(cors());
 
   // Iniciar el servidor Express
   const server = expressApp.listen(port, () => {
-    console.log(`Servidor corriendo en el puerto ${port}`);
+    console.log(`Servidor corriendo en el puerto`);
   });
 
   server.on('error', (error) => {

@@ -175,3 +175,21 @@
 input{
     text-align: center;
 }
+
+@media screen and (max-width: 768px) {
+    #logo {
+        width: 50%;
+        left: 25%;
+    }
+
+    #datos {
+        width: 90%;
+        left: 5%;
+        top: 30%;
+    }
+
+    #usuario input, #contraseña input, #boton button {
+        font-size: 1em;
+        height: 40px;
+    }
+}

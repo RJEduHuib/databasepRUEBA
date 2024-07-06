@@ -1,8 +1,9 @@
+/* Estilos base */
 #inicio,
 #imagen {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     max-width: 100%;
@@ -10,9 +11,9 @@
 }
 
 #imagen img {
-    position: absolute;
     width: 100%;
     height: 100%;
+    object-fit: cover; /* Asegura que la imagen se ajuste al contenedor sin distorsionarse */
     filter: brightness(50%) contrast(100%);
 }
 
@@ -25,7 +26,6 @@
 }
 
 #lineas img {
-    position: absolute;
     width: 100%;
     height: 100%;
 }
@@ -41,44 +41,40 @@
 }
 
 #boton button {
-    position: absolute;
-    top: 10%;
-    background: #FFFFFF;
     width: 100%;
     height: 90%;
+    background: #FFFFFF;
     border-radius: 50px;
     color: #000000;
-    font-size: 60px;
-    font-family: 'Electrolize' sans-serif;
+    font-size: 6vh; /* Ajusta el tamaño de fuente proporcionalmente a la altura de la ventana */
+    font-family: 'Electrolize', sans-serif;
     font-weight: 400;
-    font-style: normal;
-  
 }
 
 #titulo {
     position: absolute;
-    top: 29%;
-    left: 50%;
+    top: 35%;
+    left: 75%;
     width: 50%;
     height: 30%;
     text-align: center;
+    transform: translateX(-50%); /* Centra el elemento horizontalmente */
 }
 
 #titulo p {
-    position: absolute;
     color: #FFFFFF;
     font-family: "Montserrat", sans-serif;
-    font-size: 50px;
+    font-size: 5vh; /* Ajusta el tamaño de fuente proporcionalmente a la altura de la ventana */
     width: 100%;
 }
 
 #titulo h2 {
-    position: absolute;
     top: 50%;
     color: #FFFFFF;
     font-family: "Montserrat", sans-serif;
-    font-size: 30px;
+    font-size: 3vh; /* Ajusta el tamaño de fuente proporcionalmente a la altura de la ventana */
     width: 100%;
+    transform: translateY(-50%); /* Centra el texto verticalmente */
 }
 
 #logo {
@@ -87,16 +83,96 @@
     height: 35%;
     top: 1%;
     left: 67%;
-    opacity: 100%;
+    opacity: 1;
     border-radius: 50%;
     background: #000;
 }
 
 #logo img {
-    position: absolute;
-    top: 0%;
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background: white;
+    object-fit: cover;
+}
+
+/* Media queries para ajustar el diseño en diferentes tamaños de pantalla */
+@media (max-width: 1200px) {
+    #lineas {
+        top: 65%;
+        left: 50%;
+        width: 45%;
+        height: 25%;
+    }
+
+    #boton {
+        width: 85%;
+        height: 60%;
+    }
+
+    #titulo p {
+        font-size: 4vh;
+    }
+
+    #titulo h2 {
+        font-size: 2.5vh;
+    }
+
+    #logo {
+        width: 20%;
+        height: 30%;
+    }
+}
+
+@media (max-width: 768px) {
+    #lineas {
+        top: 60%;
+        left: 45%;
+        width: 50%;
+        height: 30%;
+    }
+
+    #boton {
+        width: 80%;
+        height: 50%;
+    }
+
+    #titulo p {
+        font-size: 3.5vh;
+    }
+
+    #titulo h2 {
+        font-size: 2vh;
+    }
+
+    #logo {
+        width: 25%;
+        height: 25%;
+    }
+}
+
+@media (max-width: 480px) {
+    #lineas {
+        top: 55%;
+        left: 40%;
+        width: 60%;
+        height: 35%;
+    }
+
+    #boton {
+        width: 75%;
+        height: 40%;
+    }
+
+    #titulo p {
+        font-size: 3vh;
+    }
+
+    #titulo h2 {
+        font-size: 1.8vh;
+    }
+
+    #logo {
+        width: 30%;
+        height: 20%;
+    }
 }
