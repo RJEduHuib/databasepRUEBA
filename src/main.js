@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain  } = require('electron');
 const path = require('path');
 const expressApp = require('./app'); // Importar tu aplicación Express
 const cors = require('cors');
@@ -40,7 +40,6 @@ function createWindow() {
 
   // Cargar tu aplicación web en la ventana de Electron
   mainWindow.loadURL(`http://localhost:${port}`);
-  mainWindow.webContents.openDevTools();
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
@@ -89,16 +88,31 @@ function createWindow() {
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
 }
+ipcMain.on('console-log', (event, message) => {
+  console.log('Mensaje desde Express:', message);
+  // Puedes enviar este mensaje a una ventana secundaria o procesarlo como desees
+});
 
 function openConsole() {
   // Abre la consola del sistema operativo
-  exec(`start cmd /k "echo Starting Console... && echo && node ./src/index.js"`, (err, stdout, stderr) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
+  const consoleProcess = exec(`start cmd /k node ./src/index.js`);
+
+  // Manejar salida estándar de la consola
+  consoleProcess.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+  });
+
+  // Manejar errores de la consola
+  consoleProcess.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
+
+  // Manejar cuando la consola se cierra
+  consoleProcess.on('close', (code) => {
+    console.log(`Consola cerrada con código ${code}`);
   });
 }
+
 
 function cerrarSesion() {
   if (mainWindow) {

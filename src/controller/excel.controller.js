@@ -5,7 +5,7 @@ const fs = require('fs');
 const puppeteer = require('puppeteer');
 const ExcelJS = require('exceljs');
 const chromium = require('chromium');
-const mysql = require('mysql2/promise'); // Asegúrate de importar el módulo 'path'
+const mysql = require('mysql2/promise');// Asegúrate de importar el módulo 'path'
 const { MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE } = require("../keys");
 
 const dbConfig = {
@@ -54,7 +54,7 @@ base.mostrarClaro = async (req, res) => {
 }
 
 function delay(time) {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         setTimeout(resolve, time);
     });
 }
@@ -115,12 +115,11 @@ base.mandarMovistar = async (req, res) => {
                     await page.waitForNavigation();
 
                     const urlConsulta = 'https://www.redcargamovil.com/Account/ServiciosDW.aspx?p=ue5aXpv7xKz4beF5JOsZGjDjT9VsDXyW';
-
+                    let contador = 0
                     for (const row of rows) {
                         const numeroBase = row.trim();
                         if (numeroBase) {
                             const numerosSinComas = numeroBase.replace(/;/g, '');
-                            console.log('Número a procesar:', numerosSinComas);
                             try {
                                 await page.goto(urlConsulta, { waitUntil: 'networkidle0' });
                                 await page.waitForSelector('#MainContent_txtDatoConsultaProveedor');
@@ -129,6 +128,11 @@ base.mandarMovistar = async (req, res) => {
 
                                 // Esperar 2 segundos después de enviar el formulario
                                 await delay(3000);
+                                
+                                contador = contador + 1
+                                await page.evaluate((contador) => {
+                                    console.log(`Número a procesar (desde navegador): ${contador}`);
+                                }, contador + 1);
 
                                 const clienteElement = await page.$('#MainContent_lblNombreCliente');
                                 const cliente = clienteElement ? await page.evaluate(el => el.textContent.trim(), clienteElement) : 'No disponible';

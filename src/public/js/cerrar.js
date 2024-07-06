@@ -1,25 +1,28 @@
 'use strict';
 
 class Cerrar {
-    constructor(contenedorId) {
-        this.contenedor = document.getElementById(contenedorId);
+    constructor() {
+        // No necesitamos el ID del contenedor aquí porque lo obtenemos dinámicamente
     }
-    cerrado() {
-        if (this.contenedor) {
-            this.contenedor.style.display = 'none';
+    cerrado(contenedor) {
+        console.log('cerrado');
+        if (contenedor) {
+            contenedor.style.display = 'none';
         }
     }
 }
 
-// Exponer una instancia de Cerrar al contexto global
-window.cerrador = new Cerrar('contenedorMensaje');
-
 document.addEventListener('DOMContentLoaded', (event) => {
-    const botonCerrar = document.getElementById('botonCerrar');
-    if (botonCerrar) {
-        botonCerrar.addEventListener('click', function () {
-            // Llama a la función que cierra el mensaje
-            cerrador.cerrado();
+    const botonesCerrar = document.querySelectorAll('.botonCerrar');
+
+    botonesCerrar.forEach(boton => {
+        boton.addEventListener('click', function () {
+            // Busca el contenedor de mensaje padre del botón clickeado
+            const contenedor = this.closest('.contenedorMensaje');
+            if (contenedor) {
+                const cerrador = new Cerrar();
+                cerrador.cerrado(contenedor);
+            }
         });
-    }
-});  
+    });
+});

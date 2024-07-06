@@ -15,7 +15,7 @@ users.mostrar = async (req, res) => {
             const ids = req.params.id
             const [rows] = await sql.promise().query('SELECT MAX(idUser) AS Maximo FROM users');
             const [pagina] = await sql.promise().query('SELECT * FROM pages where idPage = ?', [ids])
-            const [rols] = await sql.promise().query('SELECT * FROM rolsPagina WHERE pageIdPage = ? AND idRolUser > 1', [ids])
+            const [rols] = await sql.promise().query('SELECT * FROM rols WHERE idRol > 1', [ids])
             const [permision] = await sql.promise().query('SELECT * FROM permisosRol WHERE pageIdPage = ? AND idPermission > 1', [ids])
             res.render('users/add', { listaPagina: pagina, listaRol: rols, lista: rows, listaPermisos: permision, csrfToken: req.csrfToken() });
         } catch (error) {
@@ -228,54 +228,57 @@ users.actualizar = async (req, res) => {
             .then((result) => {
                 result.update(newClient)
             })
+        if (req.files && req.files.photoUser) {
+            const imagenUsuario = req.files.photoUser;
+            const validacion = path.extname(imagenUsuario.name);
+            const extencion = [".PNG", ".JPG", ".JPEG", ".GIF", ".TIF", ".png", ".jpg", ".jpeg", ".gif", ".tif"];
 
-        const imagenUsuario = req.files.photoUser;
-        const validacion = path.extname(imagenUsuario.name);
-        const extencion = [".PNG", ".JPG", ".JPEG", ".GIF", ".TIF", ".png", ".jpg", ".jpeg", ".gif", ".tif"];
-
-        if (!extencion.includes(validacion)) {
-            return req.flash("message", "Imagen no compatible.");
-        }
-
-        if (!req.files) {
-            return req.flash("message", "Imagen no insertada.");
-        }
-
-        const filePath = __dirname + '/../public/img/usuario/' + imagenUsuario.name;
-
-        imagenUsuario.mv(filePath, (err) => {
-            if (err) {
-                console.error(err);
-                return req.flash("message", "Error al guardar la imagen.");
-            } else {
-                sql.promise().query("UPDATE users SET photoUser = ? WHERE idUser = ?", [imagenUsuario.name, ids])
-                /* const formData = {
-                    image: {
-                        value: fs.createReadStream(filePath),
-                        options: {
-                            filename: imagenUsuario.name,
-                            contentType: imagenUsuario.mimetype,
-                        },
-                    },
-                };
- 
-                const postRequesten = request.post({
-                    url: 'http://localhost:5000/imagenEvento',
-                    formData: formData,
-                });
- 
-                req.setTimeout(0);
- 
-                postRequesten.on('error', function (err) {
-                    console.error('upload failed:', err);
-                    req.flash("success", "Error al subir imagen.");
-                });
- 
-                postRequesten.on('response', function (response) {
-                    console.log('Upload successful! Server responded with:', response.statusCode);
-                }); */
+            if (!extencion.includes(validacion)) {
+                return req.flash("message", "Imagen no compatible.");
             }
-        });
+
+            if (!req.files) {
+                return req.flash("message", "Imagen no insertada.");
+            }
+
+            const filePath = __dirname + '/../public/img/usuario/' + imagenUsuario.name;
+
+            imagenUsuario.mv(filePath, (err) => {
+                if (err) {
+                    console.error(err);
+                    return req.flash("message", "Error al guardar la imagen.");
+                } else {
+                    sql.promise().query("UPDATE users SET photoUser = ? WHERE idUser = ?", [imagenUsuario.name, ids])
+                    /* const formData = {
+                        image: {
+                            value: fs.createReadStream(filePath),
+                            options: {
+                                filename: imagenUsuario.name,
+                                contentType: imagenUsuario.mimetype,
+                            },
+                        },
+                    };
+     
+                    const postRequesten = request.post({
+                        url: 'http://localhost:5000/imagenEvento',
+                        formData: formData,
+                    });
+     
+                    req.setTimeout(0);
+     
+                    postRequesten.on('error', function (err) {
+                        console.error('upload failed:', err);
+                        req.flash("success", "Error al subir imagen.");
+                    });
+     
+                    postRequesten.on('response', function (response) {
+                        console.log('Upload successful! Server responded with:', response.statusCode);
+                    }); */
+                }
+            });
+        } else {
+            req.flash("message", "Imagen no insertada.");
+        }
         req.flash('success', 'Se Actualizo el usuario')
         res.redirect('/user/list/' + req.user.idUser);
     } catch (error) {
